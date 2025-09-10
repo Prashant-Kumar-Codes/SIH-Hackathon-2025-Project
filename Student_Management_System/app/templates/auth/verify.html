@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify OTP</title>
+</head>
+<body>
+    <h2>Verify Your Account</h2>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <!-- OTP Verification Form -->
+    <form method="POST" action="{{ url_for('auth.verify') }}">
+        <label>Enter OTP sent to your email:</label><br>
+        <input type="text" name="otp" required><br><br>
+        <button type="submit">Verify</button>
+    </form>
+
+    <br>
+    <!-- Countdown Timer -->
+    <div id="timer"></div>
+
+    <!-- Resend OTP Form -->
+    <form method="POST" action="{{ url_for('auth.resend_otp') }}">
+        <button type="submit" id="resendBtn">Resend OTP</button>
+    </form>
+    
+<!-- Add this somewhere in your HTML -->
+<div id="timer" data-countdown="{{ remaining | default(0) }}"></div>
+
+<script>
+    const timer = document.getElementById('timer');
+    const resendBtn = document.getElementById('resendBtn');
+    let countdown = parseInt(timer.dataset.countdown);
+
+    function startTimer() {
+        if (countdown > 0) {
+            resendBtn.disabled = true;
+            const interval = setInterval(() => {
+                countdown--;
+                timer.innerText = `You can resend OTP in ${countdown} seconds`;
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    timer.innerText = '';
+                    resendBtn.disabled = false;
+                }
+            }, 1000);
+        }
+    }
+
+    window.onload = startTimer;
+</script>
+
+</body>
+</html>
