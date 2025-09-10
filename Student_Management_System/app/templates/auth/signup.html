@@ -1,11 +1,147 @@
 {% extends "base.html" %}
-{% block content %}
+{% block title%}👩‍🎓 AluminiConnect - Sign Up{% endblock %}
 
-<h2>Signup</h2>
-<form method="POST" action="/signup">
-  <input type="text" name="username" placeholder="Enter Username" required>
-  <input type="email" name="email" placeholder="Enter Email" required>
-  <input type="password" name="password" placeholder="Enter Password" required>
-  <button type="submit">Signup</button>
-</form>
+
+{% block styles %} 
+  {{ super() }}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #2575fc, #6a11cb); /* Subtle professional gradient */
+    }
+
+    .signup-container {
+      width: 380px;
+      padding: 40px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    .signup-container h1 {
+      margin-bottom: 6px;
+      font-size: 26px;
+      color: #333;
+    }
+
+    .signup-container .tagline {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .signup-container input {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .signup-container input:focus {
+      border-color: #6a11cb;
+      box-shadow: 0 0 6px rgba(106,17,203,0.2);
+      outline: none;
+    }
+
+    .password-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-container input {
+      padding-right: 45px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 14px;
+      color: #666;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 15px;
+      background: linear-gradient(135deg, #2575fc, #6a11cb);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .already-account {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #444;
+    }
+
+    .already-account a {
+      color: #2575fc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .already-account a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+{% endblock %}
+
+{% block content %}
+  <div class="signup-container">
+    <h1>👩‍🎓 AluminiConnect</h1>
+    <p class="tagline">Reconnect • Engage • Grow</p>
+    
+    <form method="POST" action="/signup">
+      <input type="text" name="username" placeholder="USERNAME" required>
+
+      <input type="email" name="email" placeholder="E-MAIL ADDRESS" required>
+      
+      <div class="password-container">
+        <input type="password" name="password" id="password" placeholder="PASSWORD" required>
+        <span class="toggle-password" onclick="togglePassword()">👁</span>
+      </div>
+
+      <button type="submit">✨SIGN UP</button>
+    </form>
+
+    <p class="already-account">
+      Already have an account? <a href="{{ url_for('auth.login') }}">Login</a>
+    </p>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    function togglePassword() {
+      const pwd = document.getElementById("password");
+      pwd.type = pwd.type === "password" ? "text" : "password";
+    }
+  </script>
 {% endblock %}

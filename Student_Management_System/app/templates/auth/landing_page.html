@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alumni Connect</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+header {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 20px 0;
+}
+
+header .logo {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+header nav {
+    float: right;
+}
+
+header nav ul {
+    list-style: none;
+}
+
+header nav ul li {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+header nav ul li a.btn {
+    background: transparent;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #fff;
+    transition: 0.3s;
+}
+
+header nav ul li a.btn:hover {
+    background: #fff;
+    color: #3e2da1;
+}
+
+header nav ul li a.btn-primary {
+    background: #3e2da1;
+    color: #fff;
+    border: none;
+}
+
+header nav ul li a.btn-primary:hover {
+    background: #5c47c1;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(to right, #008cf0, #3e2da1);
+    color: #fff;
+    text-align: center;
+    padding: 120px 20px 80px;
+}
+
+.hero h2 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.hero .btn-primary {
+    background: #fff;
+    color: #3e2da1;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.hero .btn-primary:hover {
+    background: #f0f0f0;
+}
+
+/* Features Section */
+.features {
+    padding: 80px 0;
+    background: #f9f9f9;
+    text-align: center;
+}
+
+.features h2 {
+    font-size: 36px;
+    margin-bottom: 50px;
+}
+
+.feature-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.card {
+    background: #fff;
+    padding: 30px 20px;
+    border-radius: 15px;
+    width: 250px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    color: #3e2da1;
+}
+
+/* CTA Section */
+.cta {
+    background: #3e2da1;
+    color: #fff;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.cta h2 {
+    margin-bottom: 20px;
+}
+
+.cta .btn-primary {
+    background: #3e2da1;
+    color: #ff6200;
+}
+
+/* Footer */
+footer {
+    background: #1a1a2e;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+footer p {
+    margin-bottom: 5px;
+}
+
+/* Responsive */
+@media(max-width: 768px){
+    header nav {
+        float: none;
+        text-align: center;
+        margin-top: 10px;
+    }
+    header nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+    .feature-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+</style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1 class="logo">AlumniConnect</h1>
+        <nav>
+            <ul>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="{{ url_for('auth.login') }}" class="btn">Login</a></li>
+                <li><a href="{{ url_for('auth.signup') }}" class="btn btn-primary">Sign Up</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container hero-content">
+        <h2>Connecting Alumni, Strengthening Institutions</h2>
+        <p>Manage alumni data, organize events, and build lasting relationships with your alumni community.</p>
+        <a href="{{ url_for('auth.signup') }}" class="btn btn-primary">Get Started</a>
+    </div>
+</section>
+
+<section id="features" class="features">
+    <div class="container">
+        <h2>Platform Features</h2>
+        <div class="feature-cards">
+            <div class="card">
+                <h3>Centralized Data</h3>
+                <p>Keep all alumni contact and career info in one secure platform.</p>
+            </div>
+            <div class="card">
+                <h3>Event Management</h3>
+                <p>Create and manage alumni events, track RSVPs, and share updates.</p>
+            </div>
+            <div class="card">
+                <h3>Networking & Mentorship</h3>
+                <p>Connect alumni with students for mentorship, guidance, and opportunities.</p>
+            </div>
+            <div class="card">
+                <h3>Donations & Engagement</h3>
+                <p>Enable alumni to contribute to projects and support the institution.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container">
+        <h2>Join the Alumni Network Today!</h2>
+        <a href="{{ url_for('auth.signup') }}" class="btn btn-primary">Sign Up Now</a>
+    </div>
+</section>
+
+<footer id="contact">
+    <div class="container">
+        <p>© 2025 AlumniConnect. All rights reserved.</p>
+        <p>Contact: support@alumniconnect.com</p>
+    </div>
+</footer>
+</body>
+</html>

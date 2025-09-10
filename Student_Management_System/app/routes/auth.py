@@ -3,7 +3,8 @@ from app import mail
 from flask_mail import Message
 import random
 import mysql.connector
-from datetime import datetime
+from datetime import datetime, timedelta
+
 
 auth = Blueprint("auth", __name__)
 
@@ -12,6 +13,10 @@ conn = mysql.connector.connect( host="localhost", user="root", password="admin12
 
 cursor = conn.cursor(dictionary=True)
 
+#landing route
+@auth.route('/',methods=['GET'])
+def landing_page():
+    return render_template("auth/landing_page.html")
 
 # signup route
 @auth.route('/signup', methods=['GET', 'POST'])
@@ -44,82 +49,156 @@ def signup():
     return render_template('auth/signup.html')
 
 
+
+# constants
+OTP_EXPIRY = 60            # seconds
+RESEND_INTERVAL = 60        # seconds between resends
+STALE_ACCOUNT_SECONDS = 24*3600  # delete unverified accounts older than 24 hours
+
+# helper: delete stale unverified accounts
+def cleanup_stale_unverified():
+    cutoff = datetime.now() - timedelta(seconds=STALE_ACCOUNT_SECONDS)
+    try:
+        cursor.execute(
+            "DELETE FROM login_data WHERE is_verified=0 AND otp_created_at IS NOT NULL AND otp_created_at < %s",
+            (cutoff,)
+        )
+        conn.commit()
+    except Exception:
+        # don't crash on cleanup errors; optional: log it
+        pass
+
+def parse_db_datetime(val):
+    """Return a datetime from DB value (handles str or datetime)."""
+    if val is None:
+        return None
+    if isinstance(val, datetime):
+        return val
+    # if string like "2025-09-10 20:40:55" or with microseconds
+    try:
+        return datetime.strptime(val, "%Y-%m-%d %H:%M:%S")
+    except Exception:
+        try:
+            return datetime.strptime(val.split('.')[0], "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return None
+
+
+# VERIFY route
+# ... (rest of your auth.py code)
+
+# VERIFY route
 @auth.route('/verify', methods=['GET', 'POST'])
 def verify():
+    email = session.get('user_email')
+    if not email:
+        flash("Session expired. Please sign up again.", "danger")
+        return redirect(url_for('auth.signup'))
+
     if request.method == 'POST':
-        entered_otp = request.form['otp']
-        email = session.get('user_email')
+        entered_otp = request.form.get('otp')
+        if not entered_otp:
+            flash("Please enter the OTP.", "danger")
+            return redirect(url_for('auth.verify'))
 
-        if not email:
-            flash("Session expired. Please signup again.", "danger")
-            return redirect(url_for('auth.signup'))
-
-        # Get user
         cursor.execute("SELECT * FROM login_data WHERE email=%s", (email,))
         user = cursor.fetchone()
 
-        if user:
+        if not user or not user.get('otp') or not user.get('otp_created_at'):
+            flash("Invalid OTP or session. Please request a new one.", "danger")
+            return redirect(url_for('auth.resend_otp'))
+
+        try:
+            # Consistent UTC time for comparison
             otp_created_at = user['otp_created_at']
-            # check expiry (60 sec)
-            if (datetime.now() - otp_created_at).seconds > 60:
+            if isinstance(otp_created_at, str):
+                otp_created_at = datetime.strptime(otp_created_at, "%Y-%m-%d %H:%M:%S")
+
+            expiry_time = otp_created_at + timedelta(seconds=60)
+
+            if datetime.utcnow() > expiry_time:
                 flash("OTP expired. Please request a new one.", "warning")
-                return redirect(url_for('auth.resend_otp'))
+                return redirect(url_for('auth.verify'))
 
             if user['otp'] == entered_otp:
-                cursor.execute("UPDATE login_data SET is_verified = %s, otp = NULL WHERE email = %s", (True, email))
+                cursor.execute(
+                    "UPDATE login_data SET is_verified = %s, otp = NULL, otp_created_at = NULL WHERE email = %s",
+                    (1, email)
+                )
                 conn.commit()
-                flash("Account verified successfully! Please login.", "success")
+                flash("Account verified successfully! You can now log in.", "success")
                 return redirect(url_for('auth.login'))
             else:
                 flash("Invalid OTP. Please try again.", "danger")
-        else:
-            flash("No user found. Please signup again.", "danger")
-            return redirect(url_for('auth.signup'))
+                return redirect(url_for('auth.verify'))
 
-    # pass remaining time to template for countdown
-    email = session.get('user_email')
+        except Exception as e:
+            flash("An error occurred. Please try again.", "danger")
+            # Log the error for debugging: print(f"Error in verify: {e}")
+            return redirect(url_for('auth.verify'))
+
+    # GET request logic for the verify page
     remaining = 0
-    if email:
+    try:
         cursor.execute("SELECT otp_created_at FROM login_data WHERE email=%s", (email,))
         data = cursor.fetchone()
-        if data:
-            elapsed = (datetime.now() - data['otp_created_at']).seconds
-            remaining = max(0, 60 - elapsed)
+        if data and data['otp_created_at']:
+            otp_created_at = data['otp_created_at']
+            if isinstance(otp_created_at, str):
+                otp_created_at = datetime.strptime(otp_created_at, "%Y-%m-%d %H:%M:%S")
+
+            expiry_time = otp_created_at + timedelta(seconds=60)
+            remaining = max(0, int((expiry_time - datetime.utcnow()).total_seconds()))
+    except Exception:
+        remaining = 0
 
     return render_template('auth/verify.html', remaining=remaining)
 
-
-
-
+#----------------------------------------------------------------------------------------------------------------------
 
 # RESEND_OTP ROUTE
 @auth.route('/resend_otp', methods=['POST'])
 def resend_otp():
     email = session.get('user_email')
     if not email:
-        flash("Session expired. Please signup again.", "danger")
+        flash("Session expired. Please sign up again.", "danger")
         return redirect(url_for('auth.signup'))
 
-    # Check time since last OTP
     cursor.execute("SELECT otp_created_at FROM login_data WHERE email=%s", (email,))
     data = cursor.fetchone()
-    if data and (datetime.now() - data['otp_created_at']).seconds < 60:
-        flash("You can request a new OTP after 1 minute.", "warning")
-        return redirect(url_for('auth.verify'))
+    
+    # Check if a new OTP can be sent
+    if data and data['otp_created_at']:
+        otp_created_at = data['otp_created_at']
+        if isinstance(otp_created_at, str):
+            otp_created_at = datetime.strptime(otp_created_at, "%Y-%m-%d %H:%M:%S")
+        
+        # Check if the cool-down period has passed
+        resend_time = otp_created_at + timedelta(seconds=60) # Use 60s for consistency
+        if datetime.utcnow() < resend_time:
+            flash("Please wait until the current OTP expires before requesting a new one.", "warning")
+            return redirect(url_for('auth.verify'))
 
-    # Generate new OTP
+    # Generate and save new OTP
     otp = str(random.randint(100000, 999999))
-    otp_created_at = datetime.now()
-    cursor.execute("UPDATE login_data SET otp=%s, otp_created_at=%s WHERE email=%s", (otp, otp_created_at, email))
-    conn.commit()
+    otp_created_at = datetime.utcnow()
+    try:
+        cursor.execute("UPDATE login_data SET otp=%s, otp_created_at=%s WHERE email=%s",
+                       (otp, otp_created_at, email))
+        conn.commit()
 
-    # Send mail
-    msg = Message('Your New OTP Code', sender='pkthisisfor1234@gmail.com', recipients=[email])
-    msg.body = f'Your new OTP is {otp}'
-    mail.send(msg)
+        msg = Message('Your New OTP Code', sender='pkthisisfor1234@gmail.com', recipients=[email])
+        msg.body = f'Your new OTP is {otp}'
+        mail.send(msg)
 
-    flash("OTP resent successfully!", "success")
+        flash("New OTP sent successfully!", "success")
+    except Exception as e:
+        flash("Failed to send new OTP. Please try again.", "danger")
+        # Log the error for debugging: print(f"Error in resend_otp: {e}")
+        
     return redirect(url_for('auth.verify'))
+
+
 
 
 

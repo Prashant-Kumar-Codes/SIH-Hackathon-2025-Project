@@ -1,10 +1,182 @@
 {% extends "base.html" %}
+{% block title %}👩‍🎓 AluminiConnect - Login{% endblock %}
+
+{% block styles %} 
+  {{ super() }} 
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #2575fc, #6a11cb); /* Blue–Purple gradient */
+    }
+
+    .login-container {
+      background: white; /* White login box */
+      padding: 40px;
+      border-radius: 15px;
+      width: 350px;
+      text-align: center;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .login-container h1 {
+      color: purple; /* Purple heading */
+      margin-bottom: 10px;
+    }
+
+    .tagline {
+      font-size: 12px;
+      color: gray; /* small text */
+      margin-bottom: 20px;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #f2f2f2;
+      box-sizing: border-box; /* light gray inputs */
+    }
+
+    .password-container {
+      position: relative;
+      width:100%;
+    }
+
+    .password-container input {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      box-sizing: border-box;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: gray;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+      background: linear-gradient(135deg, #2575fc, #6a11cb); /* Blue–Purple button */
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .login-container button:hover {
+      transform: scale(1.05);
+    }
+
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin: 10px 0;
+    }
+
+    .remember-forgot a {
+      color: blue;
+      text-decoration: none;
+    }
+
+    .remember-forgot a:hover {
+      color: purple;
+    }
+
+    .social-login {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .social-login .small-text {
+      color: gray;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .social-icons a {
+      display: inline-block;
+      margin: 0 10px;
+      font-size: 20px;
+      color: blue; /* default */
+      transition: color 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      color: purple; /* hover color */
+    }
+  </style>
+
+{% endblock %}
+
 {% block content %}
-<h2>Login</h2>
+
+<!-- <h2>Login</h2>
 <form method="POST" action="/login">
   <input type="email" name="email" placeholder="Enter Email" required>
   <input type="password" name="password" placeholder="Enter Password" required>
   <button type="submit">Login</button>
 </form>
-<p>Don't have an account? <a href="/signup">Signup here</a></p>
+<p>Don't have an account? <a href="/signup">Signup here</a></p> -->
+
+  <div class="login-container">
+    <h1>👩‍🎓 AluminiConnect</h1>
+    <p class="tagline">Reconnect • Engage • Grow</p>
+    
+    <form method="POST" action="/login">
+      <input type="text" name="email" placeholder="EMAIL" required>
+      
+      <div class="password-container">
+        <input type="password" name ="password" id="password" placeholder="PASSWORD" required>
+        <span class="toggle-password" onclick="togglePassword()">👁</span>
+      </div>
+
+      <div class="remember-forgot">
+        <label><input type="checkbox"> Remember Me</label>
+        <a href="#">Forgot Password?</a>
+      </div>
+
+      <button type="submit">LOGIN</button>
+    </form>
+
+    <div class="social-login">
+      <p class="small-text">Or connect with</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-google"></i></a>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </div>
 {% endblock %}
+
+{% block scripts %}
+  <script>
+    function togglePassword() {
+      const pwd = document.getElementById("password");
+      if (pwd.type === "password") {
+        pwd.type = "text";
+      } else {
+        pwd.type = "password";
+      }
+    }
+  </script>
+  {% endblock %}
