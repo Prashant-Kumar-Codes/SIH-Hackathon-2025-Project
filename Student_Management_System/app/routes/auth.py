@@ -84,8 +84,6 @@ def parse_db_datetime(val):
             return None
 
 
-# VERIFY route
-# ... (rest of your auth.py code)
 
 # VERIFY route
 @auth.route('/verify', methods=['GET', 'POST'])
@@ -93,12 +91,16 @@ def verify():
     email = session.get('user_email')
     if not email:
         flash("Session expired. Please sign up again.", "danger")
+        ## Adding delete data:
+        cleanup_stale_unverified()
         return redirect(url_for('auth.signup'))
 
     if request.method == 'POST':
         entered_otp = request.form.get('otp')
         if not entered_otp:
             flash("Please enter the OTP.", "danger")
+            ## Adding delete data:
+            cleanup_stale_unverified()
             return redirect(url_for('auth.verify'))
 
         cursor.execute("SELECT * FROM login_data WHERE email=%s", (email,))
@@ -151,7 +153,9 @@ def verify():
             remaining = max(0, int((expiry_time - datetime.utcnow()).total_seconds()))
     except Exception:
         remaining = 0
-
+        ## Adding delete data:
+        cleanup_stale_unverified()
+        
     return render_template('auth/verify.html', remaining=remaining)
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -220,8 +224,10 @@ def login():
                 flash("Login successful!", "success")
                 return redirect(url_for('auth.dashboard'))
             else:
-                flash("Please verify your account first.", "warning")
-                return redirect(url_for('auth.verify'))
+                tem = user['email']
+                cursor.execute("DELETE FROM login_data WHERE email=%s",(tem,))
+                flash("Please SignIn and verify your account first.", "warning")
+                return redirect(url_for('auth.signup'))
         else:
             flash("Invalid email or password.", "danger")
 
