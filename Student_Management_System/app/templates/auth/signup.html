@@ -1,147 +1,152 @@
 {% extends "base.html" %}
-{% block title%}👩‍🎓 AluminiConnect - Sign Up{% endblock %}
+{% block title %}👩‍🎓 AluminiConnect – Sign Up{% endblock %}
 
+{% block styles %}
+{{ super() }}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #2575fc, #6a11cb); /* Same gradient as login */
+  }
 
-{% block styles %} 
-  {{ super() }}
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", Tahoma, sans-serif;
-    }
+  .signup-container {
+    background: #fff;                  /* White box like login */
+    padding: 40px;
+    border-radius: 15px;               /* Same radius as login */
+    width: 350px;                      /* Match login width */
+    text-align: center;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.2); /* Same shadow */
+  }
 
-    body {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #2575fc, #6a11cb); /* Subtle professional gradient */
-    }
+  .signup-container h1 {
+    color: purple;                     /* Same purple heading color as login */
+    margin-bottom: 10px;
+  }
 
-    .signup-container {
-      width: 380px;
-      padding: 40px;
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-      text-align: center;
-    }
+  .tagline {
+    font-size: 12px;
+    color: gray;
+    margin-bottom: 20px;
+  }
 
-    .signup-container h1 {
-      margin-bottom: 6px;
-      font-size: 26px;
-      color: #333;
-    }
+  .signup-container input,
+  .signup-container select {
+    width: 100%;
+    padding: 12px 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f2f2f2;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
 
-    .signup-container .tagline {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 25px;
-    }
+  /* Placeholder style */
+  .signup-container select {
+    color: gray;
+  }
+  .signup-container select:valid {
+    color: black;
+  }
 
-    .signup-container input {
-      width: 100%;
-      padding: 14px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-      transition: 0.2s;
-    }
+  .password-container {
+    position: relative;
+    width: 100%;
+  }
 
-    .signup-container input:focus {
-      border-color: #6a11cb;
-      box-shadow: 0 0 6px rgba(106,17,203,0.2);
-      outline: none;
-    }
+  .password-container input {
+    width: 100%;
+    padding: 12px 40px 12px 12px; /* space for toggle icon */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
 
-    .password-container {
-      position: relative;
-      width: 100%;
-    }
+  .toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: gray;
+  }
 
-    .password-container input {
-      padding-right: 45px;
-    }
+  button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
+    background: linear-gradient(135deg, #2575fc, #6a11cb); /* Same button gradient */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
 
-    .toggle-password {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 14px;
-      color: #666;
-    }
+  button:hover {
+    transform: scale(1.05);
+  }
 
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
-      margin-top: 15px;
-      background: linear-gradient(135deg, #2575fc, #6a11cb);
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+  .already-account {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #444;
+  }
 
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
+  .already-account a {
+    color: blue;
+    text-decoration: none;
+  }
 
-    .already-account {
-      margin-top: 18px;
-      font-size: 13px;
-      color: #444;
-    }
-
-    .already-account a {
-      color: #2575fc;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .already-account a:hover {
-      text-decoration: underline;
-    }
-  </style>
-
+  .already-account a:hover {
+    color: purple;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-  <div class="signup-container">
-    <h1>👩‍🎓 AluminiConnect</h1>
-    <p class="tagline">Reconnect • Engage • Grow</p>
-    
-    <form method="POST" action="/signup">
-      <input type="text" name="username" placeholder="USERNAME" required>
+<div class="signup-container">
+  <h1>👩‍🎓 AluminiConnect</h1>
+  <p class="tagline">Reconnect • Engage • Grow</p>
 
-      <input type="email" name="email" placeholder="E-MAIL ADDRESS" required>
-      
-      <div class="password-container">
-        <input type="password" name="password" id="password" placeholder="PASSWORD" required>
-        <span class="toggle-password" onclick="togglePassword()">👁</span>
-      </div>
+  <form method="POST" action="/signup">
+    <input type="text" name="username" placeholder="USERNAME" required aria-label="Username">
+    <input type="email" name="email" placeholder="E-MAIL ADDRESS" required aria-label="Email">
 
-      <button type="submit">✨SIGN UP</button>
-    </form>
+    <select name="role" required aria-label="Select your role">
+      <option value="" disabled selected hidden>SELECT YOUR ROLE</option>
+      <option value="student">Student</option>
+      <option value="alumni">Alumni</option>
+      <option value="administrator">Administrator</option>
+    </select>
 
-    <p class="already-account">
-      Already have an account? <a href="{{ url_for('auth.login') }}">Login</a>
-    </p>
-  </div>
+    <div class="password-container">
+      <input type="password" name="password" id="password"
+             placeholder="PASSWORD" required autocomplete="new-password" aria-label="Password">
+      <span class="toggle-password" onclick="togglePassword()">👁</span>
+    </div>
+
+    <button type="submit">✨ SIGN UP</button>
+  </form>
+
+  <p class="already-account">
+    Already have an account? <a href="{{ url_for('auth.login') }}">Login</a>
+  </p>
+</div>
 {% endblock %}
 
 {% block scripts %}
-  <script>
-    function togglePassword() {
-      const pwd = document.getElementById("password");
-      pwd.type = pwd.type === "password" ? "text" : "password";
-    }
-  </script>
+<script>
+  function togglePassword() {
+    const pwd = document.getElementById("password");
+    pwd.type = pwd.type === "password" ? "text" : "password";
+  }
+</script>
 {% endblock %}

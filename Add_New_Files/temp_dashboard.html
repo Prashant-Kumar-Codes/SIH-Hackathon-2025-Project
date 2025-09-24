@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AlumniConnect — Single File</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#071327;
+      --card:#0b2336;
+      --muted:#9fb2c2;
+      --accent1:#1ea0ff;
+      --accent2:#7b2cff;
+      --glass: rgba(255,255,255,0.04);
+      --radius:12px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial;
+      background:linear-gradient(180deg, #04101a 0%, #071327 100%);
+      color:#eaf6fb;
+      -webkit-font-smoothing:antialiased;
+      display:flex;
+      min-height:100vh;
+    }
+
+    /* LAYOUT */
+    .sidebar{
+      width:260px;
+      min-height:100vh;
+      padding:24px 18px;
+      background:linear-gradient(180deg, #0e74ff 0%, #6a00ff 100%);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      position:relative;
+      transition:transform .25s ease;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:700;
+      font-size:18px;
+      color:#fff;
+    }
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:#9af0ff;box-shadow:0 0 10px rgba(154,240,255,.25)}
+    nav{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+    .nav-btn{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      border-radius:12px;
+      color:rgba(255,255,255,0.95);
+      text-decoration:none;
+      cursor:pointer;
+      transition:all .18s ease;
+      font-size:15px;
+      border:1px solid transparent;
+    }
+    .nav-btn i{width:18px;text-align:center;opacity:.95}
+    .nav-btn:hover{transform:translateX(6px); background: rgba(255,255,255,0.08)}
+    .nav-btn.active{background:rgba(0,0,0,0.18); box-shadow:0 6px 20px rgba(0,0,0,0.2); transform:none}
+
+    .spacer{flex:1}
+
+    .quick-actions{display:flex;flex-direction:column;gap:10px}
+    .qa-btn{
+      padding:10px 12px;border-radius:10px;border:none;background:rgba(255,255,255,0.07);
+      color:#fff;cursor:pointer;font-weight:600; font-size:14px;
+    }
+    .qa-btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.08)}
+
+    /* MAIN */
+    .main{
+      flex:1;
+      padding:28px;
+      overflow:auto;
+    }
+    .top-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      margin-bottom:20px;
+    }
+    .welcome{
+      font-size:20px;
+      font-weight:700;
+      color:var(--accent1);
+    }
+    .search-row{display:flex;align-items:center;gap:10px}
+    .search{
+      background:var(--card); border-radius:12px; padding:10px 12px; display:flex;align-items:center;gap:10px;
+      min-width:220px; color:var(--muted);
+    }
+    .search input{background:transparent;border:0;outline:none;color:#eaf6fb; width:180px}
+    .btn{
+      padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2)); color:#04121b;
+      box-shadow:0 6px 18px rgba(28,130,255,0.12);
+    }
+
+    /* GRID */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:20px;
+    }
+    /* left column single page content */
+    .col-left{display:flex;flex-direction:column;gap:18px}
+
+    /* PROFILE BOX */
+    .profile-box{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius); padding:18px; display:flex; gap:16px; align-items:center;
+      box-shadow: 0 4px 18px rgba(2,8,20,0.6); border:1px solid rgba(255,255,255,0.03);
+    }
+    .avatar{
+      width:84px;height:84px;border-radius:10px; background:linear-gradient(180deg,#0f2939,#09202b);
+      display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--accent1);
+      overflow:hidden;border:2px solid rgba(255,255,255,0.03);
+    }
+    .profile-meta{display:flex;flex-direction:column;gap:6px}
+    .profile-meta h3{margin:0;font-size:18px}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* CARDS */
+    .card{
+      background:var(--card); padding:16px;border-radius:12px; box-shadow:0 4px 18px rgba(3,10,20,0.6);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .top-cards{display:flex;gap:12px;flex-wrap:wrap}
+    .stat{
+      flex:1; min-width:140px; padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+    }
+    .stat .num{font-size:20px;font-weight:800;color:var(--accent1)}
+    .stat .label{font-size:13px;color:var(--muted);margin-top:8px}
+
+    /* GRID within left column */
+    .mid-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+
+    .section-title{font-weight:800;color:#dff6ff;margin-bottom:8px}
+
+    /* Skill bars */
+    .skill{margin-bottom:12px}
+    .skill .name{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px}
+    .progress{height:10px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent2));width:0;transition:width 1.6s ease}
+
+    /* tags */
+    .tags{display:flex;flex-wrap:wrap;gap:8px}
+    .tag{background:rgba(255,255,255,0.03);padding:7px 10px;border-radius:999px;font-size:13px;color:var(--muted)}
+
+    /* RIGHT column - compact */
+    .col-right{display:flex;flex-direction:column;gap:12px}
+
+    /* bottom fixed footer controls inside main content */
+    .bottom-controls{display:flex;gap:10px;justify-content:center;margin-top:12px}
+    .small-btn{padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff;cursor:pointer}
+
+    /* TABLE / RECENT registrations (example) */
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;text-align:left;font-size:13px;color:var(--muted)}
+    thead th{color:#dff6ff;border-bottom:1px solid rgba(255,255,255,0.03)}
+    tr{border-bottom:1px dashed rgba(255,255,255,0.02)}
+
+    /* DIRECTORY search */
+    .dir-search{display:flex;gap:8px;align-items:center}
+    .dir-search input{padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#eaf6fb;outline:none}
+
+    /* MODAL */
+    .modal-back{position:fixed;inset:0;background:rgba(2,6,12,0.6);display:none;align-items:center;justify-content:center;z-index:80}
+    .modal{background:var(--card);padding:20px;border-radius:12px;min-width:320px;border:1px solid rgba(255,255,255,0.03)}
+    .modal h3{margin-top:0}
+    .form-row{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+    .form-row input, .form-row textarea{
+      padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#eaf6fb;outline:none
+    }
+    .modal .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+
+    /* RESPONSIVE */
+    .hamburger{display:none}
+    @media (max-width:900px){
+      .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-120%);z-index:90}
+      .sidebar.open{transform:translateX(0)}
+      .main{padding:16px}
+      .grid{grid-template-columns:1fr}
+      .col-right{order:3}
+      .hamburger{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px;border-radius:10px;color:#eaf6fb;cursor:pointer}
+    }
+
+    /* small helpers */
+    .muted-2{color:rgba(255,255,255,0.65);font-size:13px}
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><span class="dot"></span> AlumniConnect</div>
+
+    <nav id="nav">
+      <a class="nav-btn active" data-target="home"><i class="fas fa-home"></i><span>Home</span></a>
+      <a class="nav-btn" data-target="events"><i class="fas fa-calendar"></i><span>Events</span></a>
+      <a class="nav-btn" data-target="projects"><i class="fas fa-briefcase"></i><span>Projects</span></a>
+      
+      <a class="nav-btn" data-target="directory"><i class="fas fa-address-book"></i><span>Directory</span></a>
+      <a class="nav-btn" id="logout-btn" data-target="logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+    </nav>
+
+    <div class="spacer"></div>
+
+    <div class="quick-actions">
+      <button class="qa-btn" id="create-event">+ Create Event</button>
+      <button class="qa-btn secondary" id="broadcast">Broadcast</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <div class="top-row">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+        <div class="welcome">Welcome!!</div>
+      </div>
+
+      <div class="search-row">
+        <div class="search"><i class="fas fa-search"></i><input id="globalSearch" placeholder="Search alumni or events..." /></div>
+        >
+      </div>
+    </div>
+
+    <!-- PAGES (single page app sections) -->
+    <section id="home" class="page">
+      <div class="grid">
+        <div class="col-left">
+          <!-- PROFILE -->
+          <div class="profile-box card">
+            <div class="avatar" id="avatar">
+              <!-- sample initials or image -->
+              <img id="avatar-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;border-radius:8px" />
+              <div id="avatar-initials">A</div>
+            </div>
+            <div class="profile-meta">
+              <h3 id="profile-name">ANJALI SINGH</h3>
+              <div class="muted" id="profile-role">Software Engineer</div>
+              <div class="muted">Age: <span id="profile-age">23</span> | Status: <span id="profile-status">Active</span></div>
+            </div>
+          </div>
+
+          
+          <!-- mid grid with Education, Skills, Traits, Interests -->
+          <div class="card">
+            <div class="section-title">Education</div>
+            <div class="muted-2">
+              <p style="margin:0 0 6px 0">B.Tech AI & ML, XYZ Institute (2025)</p>
+              <p style="margin:0 0 6px 0">Class 12, ABC School (2021)</p>
+              <p style="margin:0 0 6px 0">Class 10, ABC School (2019)</p>
+              <p style="margin:0">Various bootcamps and certificates (2022-present)</p>
+            </div>
+          </div>
+
+          <div class="mid-grid">
+            <div class="card">
+              <div class="section-title">Skills Learnt</div>
+              <div class="skill">
+                <div class="name"><span>Python</span><span>90%</span></div>
+                <div class="progress"><i style="width:90%"></i></div>
+              </div>
+              <div class="skill">
+                <div class="name"><span>Machine Learning</span><span>80%</span></div>
+                <div class="progress"><i style="width:80%"></i></div>
+              </div>
+              <div class="skill">
+                <div class="name"><span>Data Structures</span><span>75%</span></div>
+                <div class="progress"><i style="width:75%"></i></div>
+              </div>
+              <div class="skill">
+                <div class="name"><span>React</span><span>65%</span></div>
+                <div class="progress"><i style="width:65%"></i></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="section-title">Traits of Character</div>
+              <div class="tags">
+                <div class="tag">Team Player</div>
+                <div class="tag">Analytical</div>
+                <div class="tag">Creative</div>
+                <div class="tag">Problem Solver</div>
+                <div class="tag">Adaptable</div>
+              </div>
+              <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:12px 0">
+              <div class="section-title">Areas of Interest</div>
+              <div class="tags">
+                <div class="tag">AI Research</div>
+                <div class="tag">Cloud Computing</div>
+                <div class="tag">Web Development</div>
+                <div class="tag">Startups</div>
+              </div>
+            </div>
+          </div>
+
+          
+
+          <div class="bottom-controls">
+            <button class="small-btn" id="contactBtn"><i class="fas fa-envelope"></i> Contact</button>
+            <button class="small-btn" id="consultBtn"><i class="fas fa-comments"></i> Consultation</button>
+          </div>
+        </div>
+
+        <!-- RIGHT column -->
+        <aside class="col-right">
+          
+
+          <div class="card">
+            <div class="section-title">Achievements</div>
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="width:110px;height:110px;border-radius:999px;background:conic-gradient(#1ea0ff 0 60%, #7b2cff 60% 85%, rgba(255,255,255,0.06) 85%);display:flex;align-items:center;justify-content:center">
+                <div style="background:rgba(2,8,20,0.6);width:62px;height:62px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:800"></div>
+              </div>
+              <div style="flex:1">
+                <div class="muted-2"></div>
+                <div style="margin-top:8px;font-weight:700">hackathons <div style="font-weight:600;color:var(--muted)">• 12 won, 2 tie </div></div>
+                <div style="margin-top:8px;font-weight:700">bootcamps<div style="font-weight:600;color:var(--muted)">• 15 attended</div></div>
+                <div style="margin-top:8px;font-weight:700">research papers <div style="font-weight:600;color:var(--muted)">•7 published</div></div>
+              </div>
+            </div>
+          </div>
+          
+
+          <div class="card">
+            <div class="section-title">Quick actions</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button class="small-btn" id="quickReg">Register Student</button>
+              <button class="small-btn" id="exportBtn">Export list</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- EVENTS PAGE -->
+    <section id="events" class="page" style="display:none">
+      <div class="card">
+        <h2>Events</h2>
+        <p class="muted-2">List of events and RSVPs — placeholder content.</p>
+        <ul id="events-list" style="margin-top:12px;color:var(--muted)">
+          <li><strong>Alumni Meet 2025</strong> — 12 Dec 2025</li>
+          <li><strong>Mentor Workshop</strong> — 3 Nov 2025</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PROJECTS PAGE -->
+    <section id="projects" class="page" style="display:none">
+      <div class="card">
+        <h2>Projects</h2>
+        <p class="muted-2">Alumni projects, showcases and portfolios.</p>
+        <div style="margin-top:12px;color:var(--muted)"><strong>Project Alpha</strong> — AI research platform</div>
+      </div>
+    </section>
+
+    
+
+    <!-- DIRECTORY PAGE -->
+    <section id="directory" class="page" style="display:none">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h2>Directory</h2>
+          <div class="dir-search">
+            <input placeholder="Search name or batch..." id="dirSearch" />
+            <button class="small-btn" id="dirClear">Clear</button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <table>
+            <thead><tr><th>Name</th><th>Batch</th><th>Email</th></tr></thead>
+            <tbody id="dirList" style="color:var(--muted)">
+              <tr><td>Aprajeeta Sharma</td><td>2018</td><td>aprajeeta@mail.com</td></tr>
+              <tr><td>Vivek Kumar</td><td>2017</td><td>vivek@mail.com</td></tr>
+              <tr><td>Nisha Sandilya</td><td>2021</td><td>nisha@mail.com</td></tr>
+              <tr><td>Rohit Sharma</td><td>2020</td><td>rohit@mail.com</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGOUT PAGE (confirmation) -->
+    <section id="logout" class="page" style="display:none">
+      <div class="card">
+        <h2>Logout</h2>
+        <p class="muted-2">Are you sure you want to logout?</p>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button class="btn" id="confirmLogout">Yes, logout</button>
+          <button class="small-btn" id="cancelLogout">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL for consultation -->
+  <div class="modal-back" id="modalBack">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">Request Consultation</h3>
+      <div class="form-row">
+        <input id="cname" placeholder="Your name" />
+        <input id="cemail" placeholder="Email" />
+        <textarea id="cmsg" placeholder="Message" rows="4"></textarea>
+      </div>
+      <div class="actions">
+        <button class="small-btn" id="cancelModal">Cancel</button>
+        <button class="btn" id="sendConsult">Send Request</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Basic SPA navigation + actions
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const pages = document.querySelectorAll('.page');
+    function showPage(id){
+      pages.forEach(p=>{
+        p.style.display = (p.id===id)?'block':'none';
+      });
+      navBtns.forEach(b=>{
+        if(b.dataset.target===id) b.classList.add('active'); else b.classList.remove('active');
+      });
+      // close mobile sidebar
+      document.getElementById('sidebar').classList.remove('open');
+      window.scrollTo(0,0);
+    }
+    navBtns.forEach(b=>{
+      b.addEventListener('click', e=>{
+        const t=b.dataset.target;
+        if(t==='logout'){
+          showPage('logout');
+          return;
+        }
+        showPage(t);
+      });
+    });
+
+    // Hamburger toggle for mobile
+    document.getElementById('hamburger').addEventListener('click', ()=>{
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+
+    // Contact button -> mailto
+    document.getElementById('contactBtn').addEventListener('click', ()=>{
+      window.location.href = 'mailto:support@alumniconnect.org?subject=Contact%20request&body=Hi%20team%2C%0A%0AI%20would%20like%20to%20get%20in%20touch.';
+    });
+
+    // Consultation modal
+    const modalBack = document.getElementById('modalBack');
+    document.getElementById('consultBtn').addEventListener('click', ()=> modalBack.style.display='flex');
+    document.getElementById('cancelModal').addEventListener('click', ()=> modalBack.style.display='none');
+    document.getElementById('sendConsult').addEventListener('click', ()=>{
+      const name = document.getElementById('cname').value || 'Anonymous';
+      const email = document.getElementById('cemail').value || 'not-provided';
+      const msg = document.getElementById('cmsg').value || '';
+      // simple simulated send
+      alert('Consultation request sent!\\nName: '+name+'\\nEmail: '+email);
+      modalBack.style.display='none';
+      document.getElementById('cname').value='';document.getElementById('cemail').value='';document.getElementById('cmsg').value='';
+    });
+
+    // Quick action examples
+    document.getElementById('create-event').addEventListener('click', ()=>{
+      showPage('events');
+      alert('Open Events → Click "Create new" to add an event (placeholder).');
+    });
+    document.getElementById('broadcast').addEventListener('click', ()=> alert('Broadcast feature placeholder'));
+
+    // Logout confirm
+    document.getElementById('confirmLogout').addEventListener('click', ()=>{
+      // Simulate logout
+      document.body.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#04101a,#071327);color:#eaf6fb"><div style="text-align:center"><h2>Logged out</h2><p class="muted-2">You have been logged out. Close window or <a href="#" id="backTo">return</a>.</p></div></div>';
+      // back to dashboard reload on click would be handled by real app
+    });
+    document.getElementById('cancelLogout').addEventListener('click', ()=> showPage('home'));
+
+    // Export CSV (example: export recent registrations)
+    document.getElementById('exportCsv').addEventListener('click', ()=>{
+      const rows = [['Name','Batch','Email','Joined'],
+        ['Rohit Sharma','2020','rohit@mail.com','2025-08-12'],
+        ['Priya Verma','2019','priya@mail.com','2025-08-10'],
+        ['Nisha Sandilya','2021','nisha@mail.com','2025-08-03']];
+      const csv = rows.map(r=>r.map(cell=>'\"'+String(cell).replace(/\"/g,'\"\"')+'\"').join(',')).join('\\n');
+      const blob = new Blob([csv],{type:'text/csv'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='recent_registrations.csv'; a.click(); URL.revokeObjectURL(url);
+    });
+
+    // Directory search filter
+    document.getElementById('dirSearch').addEventListener('input', (e)=>{
+      const q = e.target.value.toLowerCase();
+      const rows = document.querySelectorAll('#dirList tr');
+      rows.forEach(r=>{
+        const text = r.textContent.toLowerCase();
+        r.style.display = text.includes(q)?'table-row':'none';
+      });
+    });
+    document.getElementById('dirClear').addEventListener('click', ()=>{
+      document.getElementById('dirSearch').value=''; document.getElementById('dirSearch').dispatchEvent(new Event('input'));
+    });
+
+    // Export Btn (quick)
+    document.getElementById('exportBtn').addEventListener('click', ()=> alert('Exporting (placeholder)'));
+
+    // Quick register (placeholder)
+    document.getElementById('quickReg').addEventListener('click', ()=> alert('Open register modal (placeholder)'));
+
+    // Simulate Save Settings
+    document.getElementById('saveSettings').addEventListener('click', ()=>{
+      const name = document.getElementById('displayName').value || 'ANJALI SINGH';
+      const status = document.getElementById('statusText').value || 'Active';
+      document.getElementById('profile-name').textContent = name;
+      document.getElementById('profile-status').textContent = status;
+      alert('Settings saved (locally).');
+      showPage('home');
+    });
+
+    // Search input (global) basic highlight - focuses directory search
+    document.getElementById('globalSearch').addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){
+        const q = e.target.value.trim();
+        if(!q) return;
+        showPage('directory');
+        document.getElementById('dirSearch').value = q;
+        document.getElementById('dirSearch').dispatchEvent(new Event('input'));
+      }
+    });
+
+    // Export CSV download from quick export button as well
+    document.getElementById('exportBtn').addEventListener('click', ()=> document.getElementById('exportCsv').click());
+
+    // Avatar initials or image loading (you can set avatar image by setting src)
+    const avatarImg = document.getElementById('avatar-img');
+    const avatarInitials = document.getElementById('avatar-initials');
+    function setAvatar(imageUrl, name){
+      if(imageUrl){
+        avatarImg.src = imageUrl;
+        avatarImg.style.display = 'block';
+        avatarInitials.style.display = 'none';
+      } else {
+        avatarImg.style.display = 'none';
+        avatarInitials.style.display = (name? name.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase() : 'A');
+      }
+    }
+    setAvatar('', 'Anjali Singh');
+
+    // When page loads, animate skill bar fills (they already have width inline, but this ensures transition)
+    window.addEventListener('load', ()=>{
+      document.querySelectorAll('.progress > i').forEach(el=>{
+        const w = el.style.width;
+        el.style.width = '0';
+        requestAnimationFrame(()=> requestAnimationFrame(()=> el.style.width = w));
+      });
+    });
+
+    // Accessibility: close modal on ESC
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){
+        modalBack.style.display='none';
+        document.getElementById('sidebar').classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+  {% block title %}Alumni - Add Details{% endblock %}
+  {% block styles %}
+  {{ super() }}
+  {% endblock %}
+{% block content %}
+
+  <div class="container">
+    <div class="card">
+      <h1>Education & Profile Form</h1>
+      <p class="subtitle">Please fill in the details below. Fields marked * are required.</p>
+
+      <form id="profileForm" class="grid" method = "POST" action = "/add_details">
+        <!-- Name -->
+        <div class="full">
+          <label for="fullName">Full Name *</label>
+          <input id="fullName" name="name" type="text"  required minlength="2">
+        </div>
+
+        <!-- Photo upload -->
+        <div>
+          <label for="photo">Upload Photo *</label>
+          <input id="photo" name="photo" type="file" accept="image/*" required>
+          <p class="hint">Allowed: JPG, PNG. Max 2MB (client-side check).</p>
+        </div>
+
+        <!-- College -->
+        <div>
+          <label for="college">College / Institute *</label>
+          <input id="college" name="college" type="text"  required>
+        </div>
+
+        <!-- Branch -->
+        <div>
+            <label for="branch">Branch / Department *</label>
+            <input list="courses" id="branch" name="branch" type="text">
+
+            <datalist id="courses">
+            <option value="Bachelor of Technology (B.Tech.) in Computer Science and Engineering">
+            <option value="Bachelor of Technology (B.Tech.) in Mechanical Engineering">
+            <option value="Bachelor of Technology (B.Tech.) in Civil Engineering">
+            <option value="Bachelor of Technology (B.Tech.) in Electrical Engineering">
+            <option value="Bachelor of Technology (B.Tech.) in Electronics and Communication Engineering">
+            <option value="Bachelor of Technology (B.Tech.) in Information Technology">
+            <option value="Bachelor of Technology (B.Tech.) in Chemical Engineering">
+            <option value="Bachelor of Technology (B.Tech.) in Aerospace Engineering">
+            <option value="Bachelor of Technology (B.Tech.) in Biotechnology">
+            <option value="Bachelor of Technology (B.Tech.) in Artificial Intelligence & Machine Learning">
+            <option value="Bachelor of Science (B.Sc.) in Computer Science">
+            <option value="Bachelor of Science (B.Sc.) in Physics">
+            <option value="Bachelor of Science (B.Sc.) in Chemistry">
+            <option value="Bachelor of Science (B.Sc.) in Mathematics">
+            <option value="Bachelor of Science (B.Sc.) in Biotechnology">
+            <option value="Bachelor of Science (B.Sc.) in Microbiology">
+            <option value="Bachelor of Commerce (B.Com)">
+            <option value="Bachelor of Arts (B.A.) in Economics">
+            <option value="Bachelor of Arts (B.A.) in English Literature">
+            <option value="Bachelor of Arts (B.A.) in History">
+            <option value="Bachelor of Arts (B.A.) in Psychology">
+            <option value="Bachelor of Arts (B.A.) in Political Science">
+            <option value="Bachelor of Business Administration (BBA)">
+            <option value="Bachelor of Pharmacy (B.Pharm)">
+            <option value="Bachelor of Architecture (B.Arch)">
+            <option value="Bachelor of Fine Arts (BFA)">
+            <option value="Bachelor of Hotel Management (BHM)">
+            <option value="Bachelor of Journalism and Mass Communication (BJMC)">
+            <option value="Bachelor of Computer Applications (BCA)">
+            <option value="Master of Technology (M.Tech.) in Computer Science">
+            <option value="Master of Technology (M.Tech.) in Structural Engineering">
+            <option value="Master of Business Administration (MBA)">
+            <option value="Master of Computer Applications (MCA)">
+            <option value="Master of Science (M.Sc.) in Data Science">
+            <option value="Master of Science (M.Sc.) in Physics">
+            <option value="Master of Science (M.Sc.) in Chemistry">
+            <option value="Master of Science (M.Sc.) in Mathematics">
+            <option value="Master of Arts (M.A.) in Economics">
+            <option value="Master of Arts (M.A.) in English">
+            <option value="Ph.D. in Computer Science">
+            <option value="Ph.D. in Physics">
+            <option value="Ph.D. in Management">
+            <option value="Diploma in Civil Engineering">
+            <option value="Diploma in Electrical Engineering">
+            <option value="Diploma in Mechanical Engineering">
+            <option value="Diploma in Computer Engineering">
+            <option value="Post Graduate Diploma in Management (PGDM)">
+            <option value="Certificate in Data Analytics">
+            <option value="Certificate in Digital Marketing">
+            <option value="Certificate in Web Development">
+            <option value="Certificate in Graphic Design">
+            <option value="Doctor of Medicine (MD)">
+            <option value="Bachelor of Medicine, Bachelor of Surgery (MBBS)">
+            <option value="Bachelor of Dental Surgery (BDS)">
+            <option value="Juris Doctor (J.D.)">
+            <option value="Bachelor of Laws (LLB)">
+            <option value="Bachelor of Physiotherapy (BPT)">
+            </datalist>
+        </div>
+
+        <!-- Passing Year -->
+        <div>
+          <label for="passingyear">Passing Year *</label>
+          <input id="passingyear" name="passingyear" type="number"  min="1950" max="2035" required>
+        </div>
+
+        <!-- University Roll No. -->
+        <div>
+          <label for="rollno">University Roll No. *</label>
+          <input id="rollno" name="rollno" type="text"  required>
+        </div>
+
+        <!-- College E-mail Id -->
+        <div>
+          <label for="email_id">E-mail Id *</label>
+          <input id="email_id" name="email_id" type="email"  required>
+        </div>
+
+        <!-- CGPA -->
+        <div>
+          <label for="cgpa">CGPA *</label>
+          <input id="cgpa" name="cgpa" type="number" step="0.01" min="0" max="10"  required>
+        </div>
+
+        <!-- Passed/Not Passed -->
+        <div>
+          <label for="status">Status *</label>
+          <select id="status" name="status" required>
+            <option value="">-- Select --</option>
+            <option value="Passed">Passed</option>
+            <option value="Not Passed">Not Passed</option>
+            <option value="Pursuing">Pursuing</option>
+          </select>
+        </div>
+
+        <!-- Current Company -->
+        <div class="full">
+          <label for="company">Current Company (if any)</label>
+          <input id="company" name="company" type="text" placeholder="e.g. Infosys / Not employed">
+        </div>
+
+        <div class="full">
+          <label for="curr_role">Current Role (if any)</label>
+          <input id="curr_role" name="curr_role" type="text" placeholder="e.g. HR / Intern">
+        </div>
+
+        <div class="actions full">
+          <button type="submit">Submit</button>
+        </div>
+
+      </form>
+
+      <p id="formMessage" class="hint" aria-live="polite"></p>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events | AlumniConnect</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f8faff;
+      color: #1e293b;
+    }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 8%;
+      background: #0f172a;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #38bdf8;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: linear-gradient(90deg, #2563eb, #4f46e5);
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 8%;
+      background: linear-gradient(120deg, #2563eb, #4f46e5);
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      animation: fadeInDown 1s ease-in-out;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 30px;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Events Section */
+    .events {
+      padding: 60px 8%;
+    }
+
+    .events h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 40px;
+    }
+
+    .event-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+    }
+
+    .event-card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+
+    .event-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .event-date {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #2563eb;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .event-card h3 {
+      margin: 15px 0 10px;
+      color: #0f172a;
+    }
+
+    .event-card p {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .tags {
+      margin-bottom: 15px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-right: 8px;
+    }
+
+    /* CTA Section */
+    .cta {
+      text-align: center;
+      padding: 60px 8%;
+      background: #1e293b;
+      color: #fff;
+    }
+
+    .cta h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">AlumniConnect</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="mentorship.html">Mentorship</a></li>
+      <li><a href="donation.html">Donations</a></li>
+      <li><a href="directory.html">Directory</a></li>
+    </ul>
+    <a href="login.html" class="btn">Login / Sign Up</a>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Stay Connected with Alumni Events</h1>
+    <p>Discover upcoming reunions, workshops, and networking sessions. Be part of the alumni journey!</p>
+    <a href="#upcoming-events" class="btn">View Events</a>
+  </section>
+
+  <!-- Upcoming Events -->
+  <section class="events" id="upcoming-events">
+    <h2>Upcoming Events</h2>
+    <div class="event-cards">
+      <div class="event-card">
+        <div class="event-date">Sep 28, 2025</div>
+        <h3>Alumni Networking Meetup</h3>
+        <div class="tags">
+          <span class="tag">Networking</span>
+          <span class="tag">Career</span>
+        </div>
+        <p>Join us for an evening of professional networking with alumni across industries.</p>
+        <a href="login.html" class="btn">Register</a>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 12, 2025</div>
+        <h3>Tech Talk: Future of AI</h3>
+        <div class="tags">
+          <span class="tag">Technology</span>
+          <span class="tag">Innovation</span>
+        </div>
+        <p>A panel discussion with alumni working at top tech companies on AI advancements.</p>
+        <a href="login.html" class="btn">Register</a>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 5, 2025</div>
+        <h3>Annual Alumni Homecoming</h3>
+        <div class="tags">
+          <span class="tag">Celebration</span>
+          <span class="tag">Community</span>
+        </div>
+        <p>Celebrate our annual alumni gathering with cultural events, music, and dinner.</p>
+        <a href="login.html" class="btn">Register</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Don’t Miss Out on Alumni Events!</h2>
+    <a href="login.html" class="btn">Join the Community</a>
+  </section>
+
+</body>
+</html>

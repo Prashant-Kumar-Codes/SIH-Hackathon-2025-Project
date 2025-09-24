@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donation | AlumniConnect</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: rgba(15, 23, 42, 0.95);
+      padding: 1rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #38bdf8;
+    }
+
+    header nav a {
+      margin: 0 1rem;
+      color: #f8fafc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    header nav a:hover {
+      color: #38bdf8;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #cbd5e1;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+    }
+
+    .donation-options {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      padding: 3rem 2rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      width: 250px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #38bdf8;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.7rem 1.5rem;
+      background: linear-gradient(90deg, #38bdf8, #06b6d4);
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn:hover {
+      background: linear-gradient(90deg, #06b6d4, #38bdf8);
+      transform: scale(1.05);
+    }
+
+    .custom-donation {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .custom-donation input {
+      padding: 0.7rem;
+      border-radius: 8px;
+      border: none;
+      width: 200px;
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .custom-donation button {
+      padding: 0.7rem 1.5rem;
+      background: linear-gradient(90deg, #38bdf8, #06b6d4);
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .custom-donation button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #06b6d4, #38bdf8);
+    }
+
+    footer {
+      margin-top: auto;
+      background: #0f172a;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #94a3b8;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AlumniConnect</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="mentorship.html">Mentorship</a>
+      <a href="donation.html">Donations</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Support Your Alma Mater</h2>
+    <p>Your contribution helps fund student scholarships, campus development, and alumni-driven initiatives. Every rupee makes a difference!</p>
+  </section>
+
+  <section class="donation-options">
+    <div class="card">
+      <h3>₹500</h3>
+      <p>Support student activities & community growth.</p>
+      <a href="#" class="btn">Donate ₹500</a>
+    </div>
+    <div class="card">
+      <h3>₹1,000</h3>
+      <p>Contribute towards scholarships & mentorship programs.</p>
+      <a href="#" class="btn">Donate ₹1,000</a>
+    </div>
+    <div class="card">
+      <h3>₹5,000</h3>
+      <p>Help fund infrastructure & research development.</p>
+      <a href="#" class="btn">Donate ₹5,000</a>
+    </div>
+    <div class="card">
+      <h3>₹10,000</h3>
+      <p>Be a premium donor and make a lasting impact.</p>
+      <a href="#" class="btn">Donate ₹10,000</a>
+    </div>
+  </section>
+
+  <section class="custom-donation">
+    <h2>Custom Donation</h2>
+    <p>Enter the amount you’d like to contribute:</p>
+    <input type="number" placeholder="Enter amount in ₹">
+    <button>Donate</button>
+  </section>
+
+  <footer>
+    <p>© 2025 AlumniConnect | Building Stronger Alumni Communities</p>
+  </footer>
+</body>
+</html>

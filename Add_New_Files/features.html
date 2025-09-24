@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform Features | AlumniConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #0f172a;
+      color: #fff;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #0f172a;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .navbar a:hover {
+      color: #0bf;
+    }
+
+    .navbar .btn {
+      background: #0bf;
+      color: #0f172a;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .navbar .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      background: #1e293b;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #0bf;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #cbd5e1;
+      margin-bottom: 2rem;
+    }
+
+    .hero .get-started {
+      background: #0bf;
+      color: #0f172a;
+      padding: 0.8rem 2rem;
+      border-radius: 25px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .hero .get-started:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
+    }
+
+    /* Features Section */
+    .features {
+      background: #1e293b;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .features h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: #0bf;
+    }
+
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: #0f172a;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 15px rgba(0, 191, 255, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 191, 255, 0.4);
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+      color: #0bf;
+    }
+
+    .feature-card p {
+      font-size: 1rem;
+      color: #cbd5e1;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .feature-cards {
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">AlumniConnect</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="features.html" class="active">Features</a>
+      <a href="events.html">Events</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" class="btn">Login / Sign Up</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Connecting Alumni, Strengthening Institutions</h1>
+    <p>Manage alumni data, organize events, and build lasting relationships with your alumni community.</p>
+    <a href="dashboard.html" class="get-started">Get Started</a>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <h2>Platform Features</h2>
+    <div class="feature-cards">
+      <div class="feature-card">
+        <h3>Centralized Directory</h3>
+        <p>Keep all alumni information organized and easily accessible in one secure platform.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Event Management</h3>
+        <p>Plan, manage, and promote alumni events seamlessly with automated notifications.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Networking & Mentorship</h3>
+        <p>Connect alumni with students for mentorship, career guidance, and networking opportunities.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Donations & Fundraising</h3>
+        <p>Collect and manage contributions efficiently, supporting the growth of your institution.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Analytics & Insights</h3>
+        <p>Gain insights into alumni engagement and event participation with easy-to-read dashboards.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Secure Access</h3>
+        <p>Protect alumni data with role-based access, encryption, and secure login protocols.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 AlumniConnect. All Rights Reserved.
+  </footer>
+</body>
+</html>

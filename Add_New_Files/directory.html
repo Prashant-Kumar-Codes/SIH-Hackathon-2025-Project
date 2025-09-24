@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni Directory | AlumniConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+    body { display:flex; background:#f9fbff; color:#1e293b; min-height:100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width:240px; background:linear-gradient(135deg,#2563eb,#4f46e5);
+      color:#fff; padding:1.5rem; position:fixed; height:100%;
+    }
+    .sidebar h2 { text-align:center; margin-bottom:2rem; font-weight:700; }
+    .sidebar ul { list-style:none; }
+    .sidebar ul li { margin:1rem 0; }
+    .sidebar ul li a {
+      text-decoration:none; display:block; padding:0.6rem 1rem;
+      color:#e2e8f0; border-radius:10px; transition:0.3s;
+    }
+    .sidebar ul li a:hover, .sidebar ul li a.active {
+      background:rgba(255,255,255,0.2); color:#fff;
+    }
+
+    /* Main Content */
+    .main-content { margin-left:240px; padding:2rem; width:calc(100% - 240px); }
+    header h1 { font-size:2rem; font-weight:700; margin-bottom:1.5rem; color:#0f172a; }
+
+    /* Search & Filters */
+    .filters {
+      display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;
+      background:#fff; padding:1rem; border-radius:12px;
+      box-shadow:0 6px 15px rgba(0,0,0,0.08);
+    }
+    .filters input, .filters select {
+      padding:0.7rem 1rem; border:1px solid #cbd5e1; border-radius:8px;
+      font-size:0.95rem; flex:1; min-width:180px;
+      transition:border 0.3s, box-shadow 0.3s;
+    }
+    .filters input:focus, .filters select:focus {
+      border-color:#2563eb; box-shadow:0 0 6px rgba(37,99,235,0.3); outline:none;
+    }
+
+    /* Directory Grid */
+    .directory-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem;
+    }
+    .alumni-card {
+      background:#fff; padding:1.5rem; border-radius:15px;
+      text-align:center; box-shadow:0 6px 18px rgba(0,0,0,0.08);
+      transition:transform 0.3s, box-shadow 0.3s;
+    }
+    .alumni-card:hover {
+      transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.12);
+    }
+    .alumni-card img {
+      width:90px; height:90px; border-radius:50%; object-fit:cover;
+      border:3px solid #2563eb; margin-bottom:1rem;
+    }
+    .alumni-card h3 { color:#2563eb; margin-bottom:0.5rem; }
+    .alumni-card p { color:#475569; font-size:0.9rem; margin-bottom:0.3rem; }
+    .alumni-card button {
+      margin-top:0.8rem; padding:0.6rem 1.2rem; border:none;
+      border-radius:30px; background:linear-gradient(90deg,#2563eb,#4f46e5);
+      color:#fff; font-weight:600; cursor:pointer;
+      transition:transform 0.2s, box-shadow 0.2s;
+    }
+    .alumni-card button:hover {
+      transform:scale(1.05); box-shadow:0 8px 18px rgba(0,0,0,0.15);
+    }
+
+    /* Animations */
+    .fade-in { animation:fadeInUp 0.6s ease both; }
+    @keyframes fadeInUp {
+      from { opacity:0; transform:translateY(20px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    @media(max-width:768px) {
+      .sidebar { position:relative; width:100%; height:auto; }
+      .main-content { margin-left:0; width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>AlumniConnect</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="mentorship.html">Mentorship</a></li>
+      <li><a href="donation.html">Donations</a></li>
+      <li><a href="directory.html" class="active">Directory</a></li>
+      <li><a href="index.html">Logout</a></li>
+    </ul>
+  </div>
+
+  <!-- Main -->
+  <div class="main-content">
+    <header><h1>Alumni Directory</h1></header>
+
+    <!-- Search & Filters -->
+    <div class="filters">
+      <input type="text" placeholder="Search by name or email">
+      <select>
+        <option value="">Batch</option>
+        <option>2025</option>
+        <option>2020</option>
+        <option>2015</option>
+      </select>
+      <select>
+        <option value="">Industry</option>
+        <option>IT</option>
+        <option>Finance</option>
+        <option>Education</option>
+        <option>Healthcare</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <!-- Directory Grid -->
+    <div class="directory-grid">
+      <div class="alumni-card fade-in">
+        <img src="Images/cat-pfp.jpg" alt="Profile">
+        <h3>Vivek Kumar</h3>
+        <p>Batch: 2025</p>
+        <p>Software Engineer, Bangalore</p>
+        <button>View Profile</button>
+      </div>
+
+      <div class="alumni-card fade-in" style="animation-delay:0.1s;">
+        <img src="Images/cat-pfp.jpg" alt="Profile">
+        <h3>Riya Sharma</h3>
+        <p>Batch: 2020</p>
+        <p>Finance Analyst, Mumbai</p>
+        <button>View Profile</button>
+      </div>
+
+      <div class="alumni-card fade-in" style="animation-delay:0.2s;">
+        <img src="Images/cat-pfp.jpg" alt="Profile">
+        <h3>Amit Verma</h3>
+        <p>Batch: 2015</p>
+        <p>Professor, Delhi University</p>
+        <button>View Profile</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

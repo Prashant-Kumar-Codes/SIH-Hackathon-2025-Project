@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | AlumniConnect</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background: #0b1d33;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 8%;
+      background: #0b1d33;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00bfff;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #00bfff;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: #00bfff;
+      color: #0b1d33;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background: #0099cc;
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 8% 60px;
+      background: #16213e;
+      color: white;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #00bfff;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #cfd8dc;
+    }
+
+    /* Form Section */
+    .form-section {
+      padding: 60px 8%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .form-container {
+      background: #16213e;
+      border-radius: 15px;
+      padding: 40px;
+      max-width: 650px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      animation: fadeInUp 0.6s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #00bfff;
+      font-size: 1.8rem;
+    }
+
+    form label {
+      display: block;
+      font-weight: 500;
+      margin: 12px 0 6px;
+      color: #e0e0e0;
+    }
+
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #2a3b57;
+      background: #0f1a2e;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+
+    form input:focus, form select:focus, form textarea:focus {
+      outline: none;
+      border-color: #00bfff;
+      box-shadow: 0 0 8px rgba(0,191,255,0.6);
+    }
+
+    form textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .submit-btn:hover {
+      background: #0099cc;
+    }
+
+    /* Responsive */
+    @media(max-width: 768px){
+      nav ul {
+        flex-direction: column;
+        background: #16213e;
+        position: absolute;
+        top: 70px;
+        right: 0;
+        padding: 15px;
+        border-radius: 0 0 10px 10px;
+        display: none;
+      }
+
+      nav.active ul {
+        display: flex;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">AlumniConnect</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="mentorship.html">Mentorship</a></li>
+      <li><a href="donation.html">Donations</a></li>
+      <li><a href="directory.html">Directory</a></li>
+    </ul>
+    <a href="login.html" class="btn">Login / Sign Up</a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Alumni Registration</h1>
+    <p>Join the network and reconnect with your alma mater.</p>
+  </section>
+
+  <!-- Registration Form -->
+  <section class="form-section">
+    <div class="form-container">
+      <h2>Register as Alumni</h2>
+      <form action="#" method="post">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="fullname" required>
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="batch">Graduation Year</label>
+        <input type="number" id="batch" name="batch" placeholder="e.g. 2022" required>
+
+        <label for="degree">Degree / Course</label>
+        <input type="text" id="degree" name="degree" placeholder="e.g. B.Com, B.Tech, MBA" required>
+
+        <label for="profession">Current Profession</label>
+        <input type="text" id="profession" name="profession" placeholder="e.g. Software Engineer">
+
+        <label for="organization">Organization</label>
+        <input type="text" id="organization" name="organization" placeholder="Company / Organization">
+
+        <label for="linkedin">LinkedIn Profile (Optional)</label>
+        <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/...">
+
+        <label for="bio">Short Bio (Optional)</label>
+        <textarea id="bio" name="bio"></textarea>
+
+        <button type="submit" class="btn submit-btn">Register</button>
+      </form>
+    </div>
+  </section>
+
+</body>
+</html>

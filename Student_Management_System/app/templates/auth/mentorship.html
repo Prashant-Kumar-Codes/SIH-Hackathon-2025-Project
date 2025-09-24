@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentorship | AlumniConnect</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f8faff;
+      color: #222;
+    }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 8%;
+      background: #0f172a;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #38bdf8;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: linear-gradient(90deg, #2563eb, #4f46e5);
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 80px 8%;
+      background: linear-gradient(120deg, #2563eb, #4f46e5);
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      animation: fadeInDown 1s ease-in-out;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 30px;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mentor Cards */
+    .mentors {
+      padding: 60px 8%;
+      text-align: center;
+    }
+
+    .mentors h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #1e293b;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+      color: #0f172a;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    /* CTA */
+    .cta {
+      text-align: center;
+      padding: 60px 8%;
+      background: #1e293b;
+      color: #fff;
+    }
+
+    .cta h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">AlumniConnect</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="mentorship.html">Mentorship</a></li>
+      <li><a href="donation.html">Donations</a></li>
+      <li><a href="directory.html">Directory</a></li>
+    </ul>
+    <a href="login.html" class="btn">Login / Sign Up</a>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Connect with Mentors Who Inspire</h1>
+    <p>Build meaningful connections with alumni mentors who can guide your journey.</p>
+    <a href="#mentors" class="btn">Browse Mentors</a>
+  </section>
+
+  <!-- Mentors Section -->
+  <section class="mentors" id="mentors">
+    <h2>Featured Mentors</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="images/cat-pfp.jpg" alt="Mentor 1">
+        <h3>John Cena</h3>
+        <p>Software Engineer at Google. Passionate about AI and guiding young developers.</p>
+      </div>
+      <div class="card">
+        <img src="images/cat-pfp.jpg" alt="Mentor 2">
+        <h3>Vivek Kr</h3>
+        <p>Product Manager at Microsoft. Helps students understand tech careers & startups.</p>
+      </div>
+      <div class="card">
+        <img src="images/cat-pfp.jpg" alt="Mentor 3">
+        <h3>Spider Man</h3>
+        <p>UX Designer at Spotify. Loves mentoring students about design and creativity.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Ready to Find Your Mentor?</h2>
+    <a href="login.html" class="btn">Get Started</a>
+  </section>
+
+</body>
+</html>

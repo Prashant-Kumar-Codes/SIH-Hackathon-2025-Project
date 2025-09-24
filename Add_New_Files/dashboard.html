@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard | AlumniConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0b1d33;          /* page background */
+      --nav: #071827;         /* navbar (very dark) */
+      --hero: #16213e;        /* hero block */
+      --section: #0f2a47;     /* section background */
+      --card: #0e2337;        /* card background */
+      --accent1: #2563eb;     /* bright blue */
+      --accent2: #4f46e5;     /* indigo */
+      --cyan: #00bfff;        /* cyan accent */
+      --muted: #cfd8dc;
+      --glass: rgba(255,255,255,0.03);
+      --radius: 12px;
+      --glass-2: rgba(255,255,255,0.02);
+    }
+
+    /* Reset */
+    * { box-sizing: border-box; margin:0; padding:0; font-family: 'Poppins', sans-serif; }
+    html,body { height:100%; background: var(--bg); color: #e6eef6; -webkit-font-smoothing:antialiased; }
+
+    /* Layout */
+    .app {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: linear-gradient(180deg,var(--accent1),var(--accent2));
+      padding: 28px 20px;
+      color: #fff;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+    .logo { font-weight:700; font-size:1.1rem; color: #e9f9ff; letter-spacing:0.3px; margin-bottom:18px; display:flex; align-items:center; gap:10px; }
+    .logo .dot { width:10px; height:10px; border-radius:50%; background:var(--cyan); box-shadow: 0 6px 18px rgba(0,191,255,0.12); }
+    nav.sidebar-nav { margin-top:18px; }
+    nav.sidebar-nav a {
+      display:block; color: rgba(255,255,255,0.95); text-decoration:none; padding:10px 12px; border-radius:10px; margin-bottom:8px;
+      transition: background .18s, transform .12s;
+    }
+    nav.sidebar-nav a.active, nav.sidebar-nav a:hover { background: rgba(255,255,255,0.08); transform: translateX(6px); }
+    .sidebar .section-title { margin-top:18px; font-size:0.85rem; color: rgba(255,255,255,0.85); margin-bottom:8px; }
+
+    /* MAIN AREA */
+    main {
+      padding: 22px 32px;
+      background: linear-gradient(180deg,var(--hero),transparent 60%);
+      min-height:100vh;
+    }
+
+    /* Top header row */
+    .topbar {
+      display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:20px;
+    }
+    .greeting h1 { font-size:1.6rem; color:var(--cyan); margin-bottom:4px; }
+    .greeting p { color:var(--muted); font-size:0.95rem; margin:0; }
+
+    .top-actions {
+      display:flex; gap:12px; align-items:center;
+    }
+
+    .search {
+      display:flex; align-items:center; gap:8px; background:var(--card); padding:8px 12px; border-radius:10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    }
+    .search input { background:transparent; border:none; color:#e6eef6; outline:none; width:220px; font-size:0.95rem; }
+    .btn {
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      color: var(--nav); padding:10px 14px; border-radius:10px; font-weight:600; border:none; cursor:pointer; box-shadow: 0 10px 30px rgba(37,99,235,0.08);
+      transition: transform .14s ease, box-shadow .14s;
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow:0 18px 44px rgba(37,99,235,0.14); }
+
+    /* Grid areas */
+    .grid {
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap: 20px;
+      align-items:start;
+    }
+
+    /* KPI cards */
+    .kpis {
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap:14px;
+      margin-bottom:18px;
+    }
+    .kpi {
+      background: linear-gradient(180deg,var(--card), rgba(255,255,255,0.01));
+      padding:16px; border-radius:10px; box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .kpi:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+    .kpi .kpi-title { font-size:0.85rem; color:var(--muted); margin-bottom:8px; }
+    .kpi .kpi-value { font-size:1.5rem; font-weight:700; color:var(--cyan); }
+
+    /* Charts & right column */
+    .panel {
+      background: var(--card); border-radius:12px; padding:16px; box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+    }
+
+    .panel h3 { color:#fff; font-size:1.05rem; margin-bottom:12px; }
+    .chart-wrap { display:flex; gap:16px; flex-direction:column; }
+
+    /* SVG chart container */
+    .line-chart { width:100%; height:220px; background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:8px; padding:10px; }
+    .donut { width:100%; display:flex; align-items:center; gap:12px; justify-content:center; }
+
+    /* Upcoming events card */
+    .events-col { display:flex; flex-direction:column; gap:12px; margin-top:0; }
+    .event { display:flex; gap:12px; align-items:flex-start; padding:12px; border-radius:10px; background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border:1px solid rgba(255,255,255,0.03); }
+    .ev-date { background:var(--accent1); color:var(--nav); padding:8px 10px; border-radius:8px; font-weight:700; font-size:0.82rem; }
+    .ev-meta { color:var(--muted); font-size:0.95rem; }
+    .event h4 { color:var(--cyan); margin-bottom:6px; font-size:0.98rem; }
+
+    /* Table for recent registrations */
+    .table-wrap { overflow:auto; }
+    table { width:100%; border-collapse: collapse; min-width:700px; }
+    th,td { padding:12px 10px; text-align:left; color:var(--muted); font-size:0.95rem; border-bottom:1px solid rgba(255,255,255,0.03); }
+    th { color:#fff; font-size:0.9rem; font-weight:600; position:sticky; top:0; background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); }
+    tr:hover td { color:var(--cyan); background: rgba(0,191,255,0.02); }
+
+    /* Small helpers */
+    .muted { color:var(--muted); font-size:0.9rem; }
+    .flex { display:flex; gap:12px; align-items:center; }
+    .stack { display:flex; flex-direction:column; gap:8px; }
+
+    /* Mobile responsive */
+    @media (max-width: 980px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position:fixed; z-index:50; width:220px; transform: translateX(-260px); transition: transform .24s ease; }
+      .sidebar.open { transform: translateX(0); }
+      main { padding:16px; margin-left:0; }
+      .grid { grid-template-columns: 1fr; }
+      .line-chart { height:180px; }
+      .top-actions .search input { width:120px; }
+      table { min-width:640px; }
+    }
+    @media (max-width: 520px) {
+      .logo { font-size:1rem; }
+      .kpi .kpi-value { font-size:1.2rem; }
+      th,td { padding:10px 8px; font-size:0.9rem; }
+    }
+
+    /* Small animations */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(8px);} to { opacity:1; transform:none; } }
+    .anim { animation: fadeUp .5s ease both; }
+  </style>
+</head>
+<body>
+  <div class="app" id="appRoot">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar navigation">
+      <div class="logo"><span class="dot"></span> AlumniConnect</div>
+
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="profile.html">Profile</a>
+        <a href="events.html">Events</a>
+        <a href="directory.html">Directory</a>
+        <a href="mentorship.html">Mentorship</a>
+        <a href="donation.html">Donations</a>
+        <a href="reports.html">Reports</a>
+        <a href="settings.html">Settings</a>
+        <a href="index.html">Logout</a>
+      </nav>
+
+      <div style="margin-top:18px;">
+        <div class="section-title">Quick Actions</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn" id="openCreate">+ Create Event</button>
+          <button class="btn" id="openBroadcast" style="background:transparent;color:var(--cyan);border:1px solid rgba(255,255,255,0.06)">Broadcast</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main role="main">
+      <div class="topbar">
+        <div class="greeting">
+          <h1 id="greet">Welcome back, Vivek 👋</h1>
+          <p class="muted">Overview of alumni engagement, events and donations</p>
+        </div>
+
+        <div class="top-actions">
+          <div class="search" role="search" aria-label="Search alumni">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.9"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <input id="searchInput" type="search" placeholder="Search alumni or events..." aria-label="Search" oninput="filterTable()" />
+          </div>
+          <button class="btn" onclick="exportCSV()">Export CSV</button>
+          <button class="btn" onclick="toggleSidebar()">☰</button>
+        </div>
+      </div>
+
+      <!-- KPI ROW -->
+      <section class="kpis anim" aria-label="Key performance indicators">
+        <div class="kpi">
+          <div class="kpi-title">Total Alumni</div>
+          <div class="kpi-value" id="kTotal">1,240</div>
+          <div class="muted">Registered on platform</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-title">Active (30d)</div>
+          <div class="kpi-value" id="kActive">384</div>
+          <div class="muted">Logged actions last 30 days</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-title">Mentorships</div>
+          <div class="kpi-value" id="kMent">42</div>
+          <div class="muted">Active mentor-mentee pairs</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-title">Donations (YTD)</div>
+          <div class="kpi-value" id="kDon">₹1,15,000</div>
+          <div class="muted">Total received</div>
+        </div>
+      </section>
+
+      <!-- Grid: charts + right column -->
+      <div class="grid">
+
+        <!-- left column: charts + table -->
+        <div>
+          <!-- Engagement Chart -->
+          <div class="panel anim" style="margin-bottom:16px;">
+            <h3>Engagement — last 12 months</h3>
+            <div class="line-chart" id="lineChart" aria-hidden="false"></div>
+            <div class="muted" style="margin-top:8px;">Active users, RSVPs, messages over the past year</div>
+          </div>
+
+          <!-- Recent Registrations -->
+          <div class="panel anim" style="margin-top:16px;">
+            <h3>Recent Registrations</h3>
+            <div class="table-wrap" style="margin-top:12px;">
+              <table id="regsTable" aria-describedby="Recent registrations">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Batch</th>
+                    <th>Email</th>
+                    <th>Joined</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="regsBody">
+                  <!-- rows populated by JS -->
+                </tbody>
+              </table>
+            </div>
+            <div style="margin-top:12px; display:flex; gap:8px;">
+              <button class="btn" onclick="selectAll()">Select All</button>
+              <button class="btn" onclick="exportSelected()">Export Selected</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- right column -->
+        <aside class="stack">
+          <!-- Donations Donut -->
+          <div class="panel anim">
+            <h3>Donations (by category)</h3>
+            <div class="donut" id="donutWrap">
+              <!-- svg donut will be injected -->
+            </div>
+            <div style="margin-top:10px;">
+              <div class="muted">Top donors</div>
+              <ul id="topDonors" style="list-style:none;margin-top:8px;padding-left:0;">
+                <!-- populated via JS -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- Upcoming Events -->
+          <div class="panel anim events-col">
+            <h3>Upcoming Events</h3>
+
+            <div id="eventsList">
+              <!-- sample events -->
+              <div class="event">
+                <div class="ev-date">Sep 28</div>
+                <div>
+                  <h4>Alumni Networking Meetup</h4>
+                  <div class="ev-meta">Delhi • 7:00 PM</div>
+                </div>
+              </div>
+
+              <div class="event">
+                <div class="ev-date">Oct 12</div>
+                <div>
+                  <h4>Tech Talk: Future of AI</h4>
+                  <div class="ev-meta">Bengaluru • 3:00 PM</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <button class="btn" onclick="openCreateModal()">Create Event</button>
+            </div>
+          </div>
+
+          <!-- Quick stats -->
+          <div class="panel anim" style="display:flex;flex-direction:column;gap:8px;">
+            <h3>Quick Actions</h3>
+            <button class="btn" onclick="openBroadcastModal()" aria-haspopup="dialog">Send Broadcast</button>
+            <button class="btn" onclick="openMentorMatch()">Run Mentor Matches</button>
+            <div class="muted" style="margin-top:4px;">Last run: 2 days ago</div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <!-- Create Event Modal -->
+  <div id="modalBack" style="position:fixed;inset:0;background:rgba(4,8,15,0.6);display:none;align-items:center;justify-content:center;z-index:120;">
+    <div role="dialog" aria-modal="true" aria-label="Create event" style="width:92%;max-width:620px;background:var(--card);border-radius:12px;padding:18px;box-shadow:0 20px 60px rgba(2,6,23,0.7);">
+      <h3 style="margin-bottom:8px;color:var(--cyan)">Create New Event</h3>
+      <form id="createEventForm" style="display:grid;gap:10px;">
+        <input name="title" placeholder="Event title" required style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef6">
+        <input name="date" type="date" required style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef6">
+        <input name="location" placeholder="Location" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef6">
+        <textarea name="desc" placeholder="Short description" rows="3" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef6"></textarea>
+        <div style="display:flex;gap:8px;justify-content:flex-end;">
+          <button type="button" class="btn" onclick="closeCreateModal()">Cancel</button>
+          <button type="submit" class="btn">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* ---------------------------
+       Sample data & UI helpers
+       --------------------------- */
+    const sampleRegs = [
+      {name:'Aprajeeta Sharma', batch:2019, email:'aprajeeta.sharma@mail.com', joined:'2025-09-10'},
+      {name:'Rohit Kumar', batch:2018, email:'rohit.k@mail.com', joined:'2025-09-09'},
+      {name:'Prashant Khan', batch:2020, email:'Prashant.s@mail.com', joined:'2025-09-08'},
+      {name:'Vivek Kumar', batch:2025, email:'vivek@example.com', joined:'2025-09-01'},
+      {name:'Raj Patel', batch:2017, email:'raj.p@mail.com', joined:'2025-08-28'}
+    ];
+
+    const topDonors = [
+      {name:'Aprajeeta Sharma', amount:50000},
+      {name:'Vivek Kumar', amount:25000},
+      {name:'Nisha Sandilya', amount:15000}
+    ];
+
+    const donationBuckets = [
+      {label:'Scholarships', value:55, color:'#2563eb'},
+      {label:'Infrastructure', value:30, color:'#4f46e5'},
+      {label:'Research', value:15, color:'#00bfff'}
+    ];
+
+    /* Render recent regs */
+    function renderRegs(rows){
+      const tbody = document.getElementById('regsBody');
+      tbody.innerHTML = '';
+      rows.forEach((r, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${r.name}</td>
+          <td>${r.batch}</td>
+          <td>${r.email}</td>
+          <td>${r.joined}</td>
+          <td><button class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--cyan);padding:6px 8px;border-radius:8px;" onclick="viewProfile('${r.email}')">View</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    renderRegs(sampleRegs);
+
+    /* Top donors */
+    function renderDonors(){
+      const ul = document.getElementById('topDonors');
+      ul.innerHTML = '';
+      topDonors.forEach(d => {
+        const li = document.createElement('li');
+        li.style.marginBottom = '8px';
+        li.innerHTML = `<strong style="color:#fff">${d.name}</strong> <div class="muted">• ₹${d.amount.toLocaleString()}</div>`;
+        ul.appendChild(li);
+      });
+    }
+    renderDonors();
+
+    /* Donut chart (SVG) */
+    function drawDonut() {
+      const wrap = document.getElementById('donutWrap');
+      const size = 160;
+      const stroke = 18;
+      const radius = (size/2) - stroke;
+      const cx = size/2, cy = size/2;
+      const total = donationBuckets.reduce((s,b)=>s+b.value,0);
+      // create svg
+      const xmlns = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(xmlns,'svg');
+      svg.setAttribute('width', size);
+      svg.setAttribute('height', size);
+      svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+      let angle = -90;
+      donationBuckets.forEach((b, idx) => {
+        const part = b.value / total;
+        const dash = Math.PI * 2 * radius * part;
+        const circle = document.createElementNS(xmlns,'circle');
+        circle.setAttribute('cx', cx);
+        circle.setAttribute('cy', cy);
+        circle.setAttribute('r', radius);
+        circle.setAttribute('fill', 'none');
+        circle.setAttribute('stroke', b.color);
+        circle.setAttribute('stroke-width', stroke);
+        circle.setAttribute('stroke-linecap','butt');
+        circle.setAttribute('transform', `rotate(${angle} ${cx} ${cy})`);
+        circle.style.strokeDasharray = `${dash} ${Math.PI * 2 * radius}`;
+        circle.style.strokeDashoffset = `${Math.PI * 2 * radius}`;
+        circle.style.transition = 'stroke-dashoffset .9s ease .2s, transform .4s';
+        svg.appendChild(circle);
+        angle += part * 360;
+      });
+      // center label
+      const label = document.createElementNS(xmlns,'text');
+      label.setAttribute('x',cx);
+      label.setAttribute('y',cy);
+      label.setAttribute('text-anchor','middle');
+      label.setAttribute('dominant-baseline','middle');
+      label.setAttribute('font-size','14');
+      label.setAttribute('fill','#fff');
+      label.textContent = `₹${(115000).toLocaleString()}`;
+      svg.appendChild(label);
+
+      wrap.innerHTML = '';
+      wrap.appendChild(svg);
+
+      // animate by setting strokeDashoffset to 0 after short delay
+      setTimeout(()=> {
+        const circles = svg.querySelectorAll('circle');
+        circles.forEach((c, i) => {
+          c.style.strokeDashoffset = '0';
+        });
+      }, 100);
+    }
+
+    /* Line chart — simple polyline */
+    function drawLineChart(){
+      const el = document.getElementById('lineChart');
+      const w = el.clientWidth;
+      const h = el.clientHeight;
+      // sample monthly active users
+      const data = [72,85,120,160,140,180,220,260,230,210,320,380]; // 12 months
+      const max = Math.max(...data) * 1.1;
+      const pad = 8;
+      const xmlns = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(xmlns,'svg');
+      svg.setAttribute('width','100%');
+      svg.setAttribute('height','100%');
+      svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+
+      // background grid lines
+      for(let i=0;i<4;i++){
+        const y = pad + ( (h - 2*pad) / 3 ) * i;
+        const line = document.createElementNS(xmlns,'line');
+        line.setAttribute('x1',pad); line.setAttribute('x2',w-pad);
+        line.setAttribute('y1', y); line.setAttribute('y2', y);
+        line.setAttribute('stroke','rgba(255,255,255,0.03)');
+        line.setAttribute('stroke-width',1);
+        svg.appendChild(line);
+      }
+
+      // polyline path
+      const points = data.map((v,i) => {
+        const x = pad + (i/(data.length-1))*(w - 2*pad);
+        const y = pad + (1 - v/max)*(h - 2*pad);
+        return `${x},${y}`;
+      }).join(' ');
+      const poly = document.createElementNS(xmlns,'polyline');
+      poly.setAttribute('points', points);
+      poly.setAttribute('fill','none');
+      poly.setAttribute('stroke', 'url(#gradLine)');
+      poly.setAttribute('stroke-width',3);
+      poly.setAttribute('stroke-linecap','round');
+      poly.setAttribute('stroke-linejoin','round');
+      poly.style.strokeDasharray = 1000;
+      poly.style.strokeDashoffset = 1000;
+      poly.style.transition = 'stroke-dashoffset 1s ease 0.2s';
+      // gradient definition
+      const defs = document.createElementNS(xmlns,'defs');
+      const linGrad = document.createElementNS(xmlns,'linearGradient');
+      linGrad.setAttribute('id','gradLine'); linGrad.setAttribute('x1','0%'); linGrad.setAttribute('x2','100%');
+      const stop1 = document.createElementNS(xmlns,'stop'); stop1.setAttribute('offset','0%'); stop1.setAttribute('stop-color', 'var(--accent1)');
+      const stop2 = document.createElementNS(xmlns,'stop'); stop2.setAttribute('offset','100%'); stop2.setAttribute('stop-color', 'var(--accent2)');
+      linGrad.appendChild(stop1); linGrad.appendChild(stop2);
+      defs.appendChild(linGrad);
+      svg.appendChild(defs);
+      svg.appendChild(poly);
+
+      // fill area gradient
+      const area = document.createElementNS(xmlns,'polyline');
+      const areaPoints = `${points} ${w-pad},${h-pad} ${pad},${h-pad}`;
+      area.setAttribute('points', areaPoints);
+      area.setAttribute('fill','url(#areaGrad)');
+      svg.appendChild(area);
+      const areaGrad = document.createElementNS(xmlns,'linearGradient');
+      areaGrad.setAttribute('id','areaGrad'); areaGrad.setAttribute('x1','0%'); areaGrad.setAttribute('x2','0%');
+      const a1 = document.createElementNS(xmlns,'stop'); a1.setAttribute('offset','0%'); a1.setAttribute('stop-color','rgba(37,99,235,0.18)');
+      const a2 = document.createElementNS(xmlns,'stop'); a2.setAttribute('offset','100%'); a2.setAttribute('stop-color','rgba(79,70,229,0.02)');
+      areaGrad.appendChild(a1); areaGrad.appendChild(a2);
+      defs.appendChild(areaGrad);
+
+      // axis labels (months)
+      const months = ['OCT','NOV','DEC','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP'];
+      months.forEach((m, i) => {
+        const x = pad + (i/(data.length-1))*(w - 2*pad);
+        const text = document.createElementNS(xmlns,'text');
+        text.setAttribute('x', x);
+        text.setAttribute('y', h - 6);
+        text.setAttribute('text-anchor','middle');
+        text.setAttribute('font-size',10);
+        text.setAttribute('fill','rgba(255,255,255,0.6)');
+        text.textContent = m;
+        svg.appendChild(text);
+      });
+
+      el.innerHTML = ''; el.appendChild(svg);
+      // animate polyline draw
+      setTimeout(()=> {
+        poly.style.strokeDashoffset = 0;
+      }, 200);
+    }
+
+    /* Events modal */
+    const modalBack = document.getElementById('modalBack');
+    document.getElementById('openCreate').addEventListener('click', openCreateModal);
+    function openCreateModal(){ modalBack.style.display='flex'; }
+    function closeCreateModal(){ modalBack.style.display='none'; }
+    document.getElementById('createEventForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const f = e.target;
+      const title = f.title.value;
+      const date = f.date.value;
+      const loc = f.location.value;
+      const desc = f.desc.value;
+      // add to events list
+      const eventsList = document.getElementById('eventsList');
+      const ev = document.createElement('div'); ev.className='event';
+      const dd = new Date(date);
+      const day = dd.toLocaleString('en-US',{day:'2-digit', month:'short'});
+      ev.innerHTML = `<div class="ev-date">${day}</div><div><h4>${title}</h4><div class="ev-meta">${loc} • ${new Date(date).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div></div>`;
+      eventsList.prepend(ev);
+      closeCreateModal();
+      f.reset();
+    });
+
+    /* Search filter for registrations */
+    function filterTable(){
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const filtered = sampleRegs.filter(r => (r.name + r.email + r.batch + r.joined).toLowerCase().includes(q));
+      renderRegs(filtered);
+    }
+
+    function viewProfile(email){ alert('Open profile for: ' + email); }
+
+    /* CSV export helpers */
+    function exportCSV(){
+      const rows = sampleRegs.map(r => [r.name, r.batch, r.email, r.joined]);
+      const csv = 'Name,Batch,Email,Joined\n' + rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+      const blob = new Blob([csv], {type:'text/csv'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'alumni_registrations.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function selectAll(){
+      // this demo doesn't use checkboxes; show toast
+      alert('All rows selected (demo).');
+    }
+
+    function exportSelected(){ exportCSV(); }
+
+    function toggleSidebar(){
+      const s = document.getElementById('sidebar');
+      s.classList.toggle('open');
+    }
+
+    function openBroadcastModal(){ alert('Open broadcast composer (demo).'); }
+    function openMentorMatch(){ alert('Running mentor-match algorithm (demo).'); }
+
+    /* Init drawing */
+    window.addEventListener('load', () => {
+      drawDonut();
+      drawLineChart();
+      // small initial animation
+      document.querySelectorAll('.anim').forEach((el,i)=> el.style.animationDelay = (i*80)+'ms');
+    });
+
+    /* on resize redraw charts for correct width */
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { drawDonut(); drawLineChart(); }, 300);
+    });
+  </script>
+</body>
+</html>

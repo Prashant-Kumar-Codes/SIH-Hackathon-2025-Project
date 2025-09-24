@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+{% block title %}Alumni - Add Details{% endblock %}
+
+{% block styles %}
+{{ super() }}
+
+<style>
+    /* Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    body {
+        display: flex;
+        background: #f4f6fa;
+        color: #333;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        background: linear-gradient(to bottom, #008cf0, #3e2da1);
+        color: #fff;
+        padding: 1.5rem;
+        position: fixed;
+    }
+
+    .sidebar h2 {
+        margin-bottom: 2rem;
+        font-size: 1.4rem;
+        text-align: center;
+    }
+
+    .sidebar ul {
+        list-style: none;
+    }
+
+    .sidebar ul li {
+        margin: 1.2rem 0;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 1rem;
+        display: block;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: background 0.3s;
+    }
+
+    .sidebar ul li a:hover,
+    .sidebar ul li a.active {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Main content */
+    .main-content {
+        margin-left: 250px;
+        padding: 2rem;
+        width: calc(100% - 250px);
+    }
+
+    header {
+        margin-bottom: 2rem;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+        color: #3e2da1;
+    }
+
+    /* Profile Card */
+    .profile-card {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .profile-card img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid #3e2da1;
+        object-fit: cover;
+    }
+
+    .profile-info h2 {
+        color: #3e2da1;
+        margin-bottom: 0.5rem;
+    }
+
+    .profile-info p {
+        color: #555;
+        margin-bottom: 0.3rem;
+    }
+
+    /* Edit Form */
+    .edit-form {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .edit-form h3 {
+        margin-bottom: 1rem;
+        color: #3e2da1;
+    }
+
+    .edit-form label {
+        display: block;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .edit-form input,
+    .edit-form select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    .edit-form button {
+        margin-top: 1.5rem;
+        padding: 12px;
+        border: none;
+        border-radius: 25px;
+        background: linear-gradient(to right, #008cf0, #3e2da1);
+        color: #fff;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .edit-form button:hover {
+        opacity: 0.9;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="sidebar">
+    <h2>Alumni Connect</h2>
+    <ul>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="#" class="active">Profile</a></li>
+        <li><a href="#">Events</a></li>
+        <li><a href="#">Mentorship</a></li>
+        <li><a href="#">Donations</a></li>
+        <li><a href="#">Directory</a></li>
+        <li><a href="/logout'">Logout</a></li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <header>
+        <h1>My Profile</h1>
+    </header>
+
+    <div class="profile-card">
+        <img src="{{ url_for('static', filename='images/' + student_data.photo) if student_data and student_data.photo else url_for('static', filename='images/cat-pfp.jpg') }}" alt="Profile Picture">
+        <div class="profile-info">
+            <h2>{{ student_data.name if student_data and student_data.name else "Add Your Name" }}</h2>
+            <p>Email: {{ student_data.email if student_data and student_data.email else "Add Your Email" }}</p>
+            <p>Batch: {{ student_data.passing_year if student_data and student_data.passing_year else "Add Your Passing Year" }}</p>
+            <p>Profession: {{ student_data.curr_role if student_data and student_data.curr_role else "Add Your Profession" }}</p>
+        </div>
+    </div>
+
+    <div class="edit-form">
+        <h3>Edit Profile</h3>
+        <form id="profileForm" class="grid" method="POST" action="/add_details">
+            <label for="fullName">Full Name *</label>
+            <input id="fullName" name="name" type="text" value="{{ student_data.name if student_data else '' }}" minlength="2">
+
+            <label for="photo">Upload Photo *</label>
+            <input id="photo" name="photo" type="file" accept="image/*">
+            <p class="hint">Allowed: JPG, PNG. Max 2MB (client-side check).</p>
+
+            <label for="college">College / Institute *</label>
+            <input id="college" name="college" type="text" value="{{ student_data.coll_univ if student_data else '' }}">
+
+            <label for="branch">Branch / Department *</label>
+            <input list="courses" id="branch" name="branch" type="text" value="{{ student_data.branch if student_data else '' }}">
+            <datalist id="courses">
+                <option value="Bachelor of Technology (B.Tech.) in Computer Science and Engineering">
+                <option value="Bachelor of Technology (B.Tech.) in Mechanical Engineering">
+                <option value="Bachelor of Technology (B.Tech.) in Civil Engineering">
+                <option value="Bachelor of Technology (B.Tech.) in Electrical Engineering">
+                <option value="Bachelor of Technology (B.Tech.) in Electronics and Communication Engineering">
+                <option value="Bachelor of Technology (B.Tech.) in Information Technology">
+                <option value="Bachelor of Technology (B.Tech.) in Chemical Engineering">
+                <option value="Bachelor of Technology (B.Tech.) in Aerospace Engineering">
+                <option value="Bachelor of Technology (B.Tech.) in Biotechnology">
+                <option value="Bachelor of Technology (B.Tech.) in Artificial Intelligence & Machine Learning">
+                <option value="Bachelor of Science (B.Sc.) in Computer Science">
+                <option value="Bachelor of Science (B.Sc.) in Physics">
+                <option value="Bachelor of Science (B.Sc.) in Chemistry">
+                <option value="Bachelor of Science (B.Sc.) in Mathematics">
+                <option value="Bachelor of Science (B.Sc.) in Biotechnology">
+                <option value="Bachelor of Science (B.Sc.) in Microbiology">
+                <option value="Bachelor of Commerce (B.Com)">
+                <option value="Bachelor of Arts (B.A.) in Economics">
+                <option value="Bachelor of Arts (B.A.) in English Literature">
+                <option value="Bachelor of Arts (B.A.) in History">
+                <option value="Bachelor of Arts (B.A.) in Psychology">
+                <option value="Bachelor of Arts (B.A.) in Political Science">
+                <option value="Bachelor of Business Administration (BBA)">
+                <option value="Bachelor of Pharmacy (B.Pharm)">
+                <option value="Bachelor of Architecture (B.Arch)">
+                <option value="Bachelor of Fine Arts (BFA)">
+                <option value="Bachelor of Hotel Management (BHM)">
+                <option value="Bachelor of Journalism and Mass Communication (BJMC)">
+                <option value="Bachelor of Computer Applications (BCA)">
+                <option value="Master of Technology (M.Tech.) in Computer Science">
+                <option value="Master of Technology (M.Tech.) in Structural Engineering">
+                <option value="Master of Business Administration (MBA)">
+                <option value="Master of Computer Applications (MCA)">
+                <option value="Master of Science (M.Sc.) in Data Science">
+                <option value="Master of Science (M.Sc.) in Physics">
+                <option value="Master of Science (M.Sc.) in Chemistry">
+                <option value="Master of Science (M.Sc.) in Mathematics">
+                <option value="Master of Arts (M.A.) in Economics">
+                <option value="Master of Arts (M.A.) in English">
+                <option value="Ph.D. in Computer Science">
+                <option value="Ph.D. in Physics">
+                <option value="Ph.D. in Management">
+                <option value="Diploma in Civil Engineering">
+                <option value="Diploma in Electrical Engineering">
+                <option value="Diploma in Mechanical Engineering">
+                <option value="Diploma in Computer Engineering">
+                <option value="Post Graduate Diploma in Management (PGDM)">
+                <option value="Certificate in Data Analytics">
+                <option value="Certificate in Digital Marketing">
+                <option value="Certificate in Web Development">
+                <option value="Certificate in Graphic Design">
+                <option value="Doctor of Medicine (MD)">
+                <option value="Bachelor of Medicine, Bachelor of Surgery (MBBS)">
+                <option value="Bachelor of Dental Surgery (BDS)">
+                <option value="Juris Doctor (J.D.)">
+                <option value="Bachelor of Laws (LLB)">
+                <option value="Bachelor of Physiotherapy (BPT)">
+            </datalist>
+
+            <label for="passingyear">Passing Year *</label>
+            <input id="passingyear" name="passingyear" type="number" value="{{ student_data.passing_year if student_data else '' }}" min="1950" max="2035">
+
+            <label for="rollno">University Roll No. *</label>
+            <input id="rollno" name="rollno" type="text" value="{{ student_data.university_roll_no if student_data else '' }}">
+
+            <label for="email_id">E-mail Id *</label>
+            <input id="email_id" name="email_id" type="email" value="{{ student_data.email_id if student_data else '' }}">
+    </div>
+
+    <label for="cgpa">CGPA *</label>
+    <input id="cgpa" name="cgpa" type="number" value="{{ student_data.cgpa if student_data else '' }}" step="0.01" min="0" max="10">
+
+    <label for="status">Status *</label>
+    <select id="status" name="status">
+        <option value="">-- Select --</option>
+        <option value="Passed" {% if student_data and student_data.status == 'Passed' %}selected{% endif %}>Passed</option>
+        <option value="Not Passed" {% if student_data and student_data.status == 'Not Passed' %}selected{% endif %}>Not Passed</option>
+        <option value="Pursuing" {% if student_data and student_data.status == 'Pursuing' %}selected{% endif %}>Pursuing</option>
+    </select>
+
+    <label for="company">Current Company (if any)</label>
+    <input id="company" name="company" type="text" value="{{ student_data.current_company if student_data else '' }}" placeholder="e.g. Infosys / Not employed">
+
+    <label for="curr_role">Current Role (if any)</label>
+    <input id="curr_role" name="curr_role" type="text" value="{{ student_data.curr_role if student_data else '' }}" placeholder="e.g. HR / Intern">
+
+    <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

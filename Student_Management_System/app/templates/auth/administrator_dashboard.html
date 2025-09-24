@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AlumniConnect Dashboard</title>
+  <link rel="stylesheet" href="static/css/dashboard.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="logo">AlumniConnect</h2>
+      <nav>
+        <a href="#" class="active">Dashboard</a>
+        <a href="#">Profile</a>
+        <a href="/events">Events</a>
+        <a href="#">Directory</a>
+        <a href="#">Mentorship</a>
+        <a href="#">Donations</a>
+        <a href="#">Reports</a>
+        <a href="#">Settings</a>
+        <a href="#">Logout</a>
+      </nav>
+      <div class="quick-actions">
+        <button id="createEvent">+ Create Event</button>
+        <button id="broadcast">Broadcast</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <section class="top-graph">
+        <canvas id="lineChart"></canvas>
+      </section>
+
+      <section class="content-grid">
+        <!-- Recent Registrations -->
+        <div class="card">
+          <h3>Recent Registrations</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th><th>Batch</th><th>Email</th><th>Joined</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Aprajeeta Sharma</td><td>2019</td><td>aprajeeta.sharma@mail.com</td><td>2025-09-10</td>
+                <td><a href="#">View</a></td>
+              </tr>
+              <tr>
+                <td>Rohit Kumar</td><td>2018</td><td>rohit.k@mail.com</td><td>2025-09-09</td>
+                <td><a href="#">View</a></td>
+              </tr>
+              <tr>
+                <td>Prashant Khan</td><td>2020</td><td>Prashant.s@mail.com</td><td>2025-09-08</td>
+                <td><a href="#">View</a></td>
+              </tr>
+              <tr>
+                <td>Vivek Kumar</td><td>2025</td><td>vivek@example.com</td><td>2025-09-01</td>
+                <td><a href="#">View</a></td>
+              </tr>
+              <tr>
+                <td>Raj Patel</td><td>2017</td><td>raj.p@mail.com</td><td>2025-08-28</td>
+                <td><a href="#">View</a></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-actions">
+            <button>Select All</button>
+            <button>Export Selected</button>
+          </div>
+        </div>
+
+        <!-- Right Sidebar Widgets -->
+        <div class="card side-widgets">
+          <div class="donors">
+            <h3>Top Donors</h3>
+            <ul>
+              <li>Aprajeeta Sharma – ₹50,000</li>
+              <li>Vivek Kumar – ₹25,000</li>
+              <li>Nisha Sandilya – ₹15,000</li>
+            </ul>
+          </div>
+          <div class="events">
+            <h3>Upcoming Events</h3>
+            <p><strong>Sep 28</strong> – Alumni Networking Meetup, Delhi 7:00 PM</p>
+            <p><strong>Oct 12</strong> – Tech Talk: Future of AI, Bengaluru 3:00 PM</p>
+            <button>Create Event</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="static/js/dashboard.js"></script>
+</body>
+</html>

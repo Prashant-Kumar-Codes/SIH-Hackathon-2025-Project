@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Alumni Portal</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    /* Page Background */
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to right, #008cf0, #3e2da1);
+    }
+
+    /* Card */
+    .auth-box {
+      width: 380px;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      position: relative;
+    }
+
+    /* Title */
+    .auth-box h2 {
+      margin-bottom: 1.5rem;
+      color: #3e2da1;
+    }
+
+    /* Forms */
+    form {
+      display: none;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    form.active {
+      display: flex;
+    }
+
+    label {
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    input {
+      padding: 12px;
+      margin-bottom: 1.2rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #008cf0;
+    }
+
+    /* Buttons */
+    button {
+      padding: 12px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(to right, #008cf0, #3e2da1);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    /* Toggle Links */
+    .toggle {
+      margin-top: 1rem;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .toggle a {
+      color: #008cf0;
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 5px;
+    }
+
+    .toggle a:hover {
+      color: #3e2da1;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-box">
+    <h2 id="form-title">Login</h2>
+
+    <!-- Login Form -->
+    <form id="login-form" class="active">
+      <label>Email</label>
+      <input type="email" placeholder="Enter your email" required />
+      
+      <label>Password</label>
+      <input type="password" placeholder="Enter your password" required />
+
+      <button type="submit">Login</button>
+    </form>
+
+    <!-- Signup Form -->
+    <form id="signup-form">
+      <label>Name</label>
+      <input type="text" placeholder="Enter your name" required />
+
+      <label>Email</label>
+      <input type="email" placeholder="Enter your email" required />
+
+      <label>Password</label>
+      <input type="password" placeholder="Create a password" required />
+
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <!-- Toggle Links -->
+    <div class="toggle">
+      <span id="toggle-text">Don't have an account?</span>
+      <a href="#" id="toggle-link">Sign Up</a>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById("login-form");
+    const signupForm = document.getElementById("signup-form");
+    const toggleLink = document.getElementById("toggle-link");
+    const toggleText = document.getElementById("toggle-text");
+    const formTitle = document.getElementById("form-title");
+
+    toggleLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (loginForm.classList.contains("active")) {
+        loginForm.classList.remove("active");
+        signupForm.classList.add("active");
+        formTitle.textContent = "Sign Up";
+        toggleText.textContent = "Already have an account?";
+        toggleLink.textContent = "Login";
+      } else {
+        signupForm.classList.remove("active");
+        loginForm.classList.add("active");
+        formTitle.textContent = "Login";
+        toggleText.textContent = "Don't have an account?";
+        toggleLink.textContent = "Sign Up";
+      }
+    });
+  </script>
+</body>
+</html>

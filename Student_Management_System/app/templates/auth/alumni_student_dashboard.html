@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+{% block title %}AlumniConnect — Single File{% endblock %}
+
+  {% block styles %}
+  {{ super() }}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href= "{{url_for('static', filename='css/alumni_student_dashboard.css')}}" rel="stylesheet">
+  {% endblock %}
+
+{% block content %}
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><span class="dot"></span> AlumniConnect</div>
+
+    <nav id="nav">
+      <a class="nav-btn active" data-target="home"><i class="fas fa-home"></i><span>Home</span></a>
+      <a class="nav-btn" data-target="events"><i class="fas fa-calendar"></i><span>Events</span></a>
+      <a herf="{{ url_for('auth.alumni_student_profile') }}" class="nav-btn" data-target="profile"><i class="fas fa-briefcase"></i><span>Profile</span></a>
+      <a class="nav-btn" data-target="projects"><i class="fas fa-briefcase"></i><span>Projects</span></a>      
+      <a class="nav-btn" data-target="directory"><i class="fas fa-address-book"></i><span>Directory</span></a>
+      <a class="nav-btn" id="logout-btn" data-target="logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+    </nav>
+
+    <div class="spacer"></div>
+
+    <div class="quick-actions">
+      <button class="qa-btn" id="create-event">+ Create Event</button>
+      <button class="qa-btn secondary" id="broadcast">Broadcast</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <div class="top-row">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+        <div class="welcome">Welcome!!</div>
+      </div>
+
+      <div class="search-row">
+        <div class="search"><i class="fas fa-search"></i><input id="globalSearch" placeholder="Search alumni or events..." /></div>
+        >
+      </div>
+    </div>
+
+    <!-- PAGES (single page app sections) -->
+    <section id="home" class="page">
+      <div class="grid">
+        <div class="col-left">
+          <!-- PROFILE -->
+          <div class="profile-box card">
+            <div class="avatar" id="avatar">
+              <!-- sample initials or image -->
+              <img id="avatar-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;border-radius:8px" />
+              <div id="avatar-initials">A</div>
+            </div>
+            <div class="profile-meta">
+              <h3 id="profile-name">ANJALI SINGH</h3>
+              <div class="muted" id="profile-role">Software Engineer</div>
+              <div class="muted">Age: <span id="profile-age">23</span> | Status: <span id="profile-status">Active</span></div>
+            </div>
+          </div>
+
+          
+          <!-- mid grid with Education, Skills, Traits, Interests -->
+          <div class="card">
+            <div class="section-title">Education</div>
+            <div class="muted-2">
+              <p style="margin:0 0 6px 0">B.Tech AI & ML, XYZ Institute (2025)</p>
+              <p style="margin:0 0 6px 0">Class 12, ABC School (2021)</p>
+              <p style="margin:0 0 6px 0">Class 10, ABC School (2019)</p>
+              <p style="margin:0">Various bootcamps and certificates (2022-present)</p>
+            </div>
+          </div>
+
+          <div class="mid-grid">
+            <div class="card">
+              <div class="section-title">Skills Learnt</div>
+              <div class="skill">
+                <div class="name"><span>Python</span><span>90%</span></div>
+                <div class="progress"><i style="width:90%"></i></div>
+              </div>
+              <div class="skill">
+                <div class="name"><span>Machine Learning</span><span>80%</span></div>
+                <div class="progress"><i style="width:80%"></i></div>
+              </div>
+              <div class="skill">
+                <div class="name"><span>Data Structures</span><span>75%</span></div>
+                <div class="progress"><i style="width:75%"></i></div>
+              </div>
+              <div class="skill">
+                <div class="name"><span>React</span><span>65%</span></div>
+                <div class="progress"><i style="width:65%"></i></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="section-title">Traits of Character</div>
+              <div class="tags">
+                <div class="tag">Team Player</div>
+                <div class="tag">Analytical</div>
+                <div class="tag">Creative</div>
+                <div class="tag">Problem Solver</div>
+                <div class="tag">Adaptable</div>
+              </div>
+              <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:12px 0">
+              <div class="section-title">Areas of Interest</div>
+              <div class="tags">
+                <div class="tag">AI Research</div>
+                <div class="tag">Cloud Computing</div>
+                <div class="tag">Web Development</div>
+                <div class="tag">Startups</div>
+              </div>
+            </div>
+          </div>
+
+          
+
+          <div class="bottom-controls">
+            <button class="small-btn" id="contactBtn"><i class="fas fa-envelope"></i> Contact</button>
+            <button class="small-btn" id="consultBtn"><i class="fas fa-comments"></i> Consultation</button>
+          </div>
+        </div>
+
+        <!-- RIGHT column -->
+        <aside class="col-right">
+          
+
+          <div class="card">
+            <div class="section-title">Achievements</div>
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="width:110px;height:110px;border-radius:999px;background:conic-gradient(#1ea0ff 0 60%, #7b2cff 60% 85%, rgba(255,255,255,0.06) 85%);display:flex;align-items:center;justify-content:center">
+                <div style="background:rgba(2,8,20,0.6);width:62px;height:62px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:800"></div>
+              </div>
+              <div style="flex:1">
+                <div class="muted-2"></div>
+                <div style="margin-top:8px;font-weight:700">hackathons <div style="font-weight:600;color:var(--muted)">• 12 won, 2 tie </div></div>
+                <div style="margin-top:8px;font-weight:700">bootcamps<div style="font-weight:600;color:var(--muted)">• 15 attended</div></div>
+                <div style="margin-top:8px;font-weight:700">research papers <div style="font-weight:600;color:var(--muted)">•7 published</div></div>
+              </div>
+            </div>
+          </div>
+          
+
+          <div class="card">
+            <div class="section-title">Quick actions</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button class="small-btn" id="quickReg">Register Student</button>
+              <button class="small-btn" id="exportBtn">Export list</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+<!--      -------------------------------------------------------------------------------------------------------------            -->
+  
+    <!-- EVENTS PAGE -->
+    <section id="events" class="page" style="display:none">
+      <div class="card">
+        <h2>Events</h2>
+        <p class="muted-2">List of events and RSVPs — placeholder content.</p>
+        <ul id="events-list" style="margin-top:12px;color:var(--muted)">
+          <li><strong>Alumni Meet 2025</strong> — 12 Dec 2025</li>
+          <li><strong>Mentor Workshop</strong> — 3 Nov 2025</li>
+        </ul>
+      </div>
+    </section>
+
+<!--      -------------------------------------------------------------------------------------------------------------            -->
+    <!-- PROFILE PAGE -->
+  <section class="page" id="profile" style="display:none">
+  <div class="profile-card">
+    <img id="profile-img" src="{{ url_for('static', filename='images/' + student_data.photo) if student_data and student_data.photo else url_for('static', filename='images/cat-pfp.jpg') }}" alt="Profile Picture">
+    <div class="profile-info">
+      <h2 id="profile-name">{{ student_data.name if student_data and student_data.name else "Add Your Name" }}</h2>
+      <p>Email: <span id="profile-email">{{ student_data.email if student_data and student_data.email else "Add Your Email" }}</span></p>
+      <p>Batch: <span id="profile-batch">{{ student_data.passing_year if student_data and student_data.passing_year else "Add Your Passing Year" }}</span></p>
+      <p>Profession: <span id="profile-role">{{ student_data.curr_role if student_data and student_data.curr_role else "Add Your Profession" }}</span></p>
+    </div>
+  </div>
+
+  <div class="edit-form">
+    <h3>Edit Profile</h3>
+    <form id="profileForm" method="POST" action="/add_details" enctype="multipart/form-data">
+      <label for="fullName">Full Name *</label>
+      <input id="fullName" name="name" type="text" value="{{ student_data.name if student_data else '' }}" minlength="2">
+
+      <label for="photo">Upload Photo *</label>
+      <input id="photo" name="photo" type="file" accept="image/*">
+
+      <label for="college">College / Institute *</label>
+      <input id="college" name="college" type="text" value="{{ student_data.coll_univ if student_data else '' }}">
+
+      <label for="branch">Branch / Department *</label>
+      <input list="courses" id="branch" name="branch" type="text" value="{{ student_data.branch if student_data else '' }}">
+      <datalist id="courses">
+        <option value="Computer Science">
+        <option value="Mechanical">
+        <option value="Civil">
+      </datalist>
+
+      <label for="passingyear">Passing Year *</label>
+      <input id="passingyear" name="passingyear" type="number" value="{{ student_data.passing_year if student_data else '' }}" min="1950" max="2035">
+
+      <label for="email_id">E-mail Id *</label>
+      <input id="email_id" name="email_id" type="email" value="{{ student_data.email if student_data else '' }}">
+
+      <label for="curr_role">Current Role (if any)</label>
+      <input id="curr_role" name="curr_role" type="text" value="{{ student_data.curr_role if student_data else '' }}">
+
+      <button type="submit">Save</button>
+    </form>
+  </div>
+</section>
+
+
+<!--      -------------------------------------------------------------------------------------------------------------            -->
+
+    <!-- PROJECTS PAGE -->
+    <section id="projects" class="page" style="display:none">
+      <div class="card">
+        <h2>Projects</h2>
+        <p class="muted-2">Alumni projects, showcases and portfolios.</p>
+        <div style="margin-top:12px;color:var(--muted)"><strong>Project Alpha</strong> — AI research platform</div>
+      </div>
+    </section>
+
+    
+
+    <!-- DIRECTORY PAGE -->
+    <section id="directory" class="page" style="display:none">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h2>Directory</h2>
+          <div class="dir-search">
+            <input placeholder="Search name or batch..." id="dirSearch" />
+            <button class="small-btn" id="dirClear">Clear</button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <table>
+            <thead><tr><th>Name</th><th>Batch</th><th>Email</th></tr></thead>
+            <tbody id="dirList" style="color:var(--muted)">
+              <tr><td>Aprajeeta Sharma</td><td>2018</td><td>aprajeeta@mail.com</td></tr>
+              <tr><td>Vivek Kumar</td><td>2017</td><td>vivek@mail.com</td></tr>
+              <tr><td>Nisha Sandilya</td><td>2021</td><td>nisha@mail.com</td></tr>
+              <tr><td>Rohit Sharma</td><td>2020</td><td>rohit@mail.com</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGOUT PAGE (confirmation) -->
+    <section id="logout" class="page" style="display:none">
+      <div class="card">
+        <h2>Logout</h2>
+        <p class="muted-2">Are you sure you want to logout?</p>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button class="btn" id="confirmLogout">Yes, logout</button>
+          <button class="small-btn" id="cancelLogout">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL for consultation -->
+  <div class="modal-back" id="modalBack">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">Request Consultation</h3>
+      <div class="form-row">
+        <input id="cname" placeholder="Your name" />
+        <input id="cemail" placeholder="Email" />
+        <textarea id="cmsg" placeholder="Message" rows="4"></textarea>
+      </div>
+      <div class="actions">
+        <button class="small-btn" id="cancelModal">Cancel</button>
+        <button class="btn" id="sendConsult">Send Request</button>
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}
+
+
+  {% block scripts %}
+  <script src="{{ url_for('static', filename='js/alumni_student_dashboard.js') }}"></script>
+  {% endblock %}

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Events | AlumniConnect</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0b1d33;          /* page background */
+      --nav: #071827;         /* navbar (very dark) */
+      --hero: #16213e;        /* hero block */
+      --section: #0f2a47;     /* section background */
+      --card: #0e2337;        /* card background (slightly different) */
+      --accent: #00bfff;      /* bright cyan accent */
+      --muted: #cfd8dc;       /* muted text */
+      --glass: rgba(255,255,255,0.03);
+      --radius: 14px;
+    }
+
+    /* Reset */
+    *{ box-sizing: border-box; margin:0; padding:0; font-family:'Poppins',sans-serif; }
+    html,body{ height:100%; }
+
+    body {
+      background: var(--bg);
+      color: #e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
+
+    /* NAVBAR */
+    nav{
+      background: var(--nav);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:18px 6%;
+      position:sticky;
+      top:0;
+      z-index:100;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.25);
+    }
+    .logo{ color:var(--accent); font-weight:700; font-size:1.15rem; }
+    nav ul{ list-style:none; display:flex; gap:22px; align-items:center; }
+    nav a { color:#fff; text-decoration:none; font-weight:500; font-size:0.95rem; transition: color .18s ease; }
+    nav a:hover{ color:var(--accent); }
+    .nav-cta{
+      background:var(--accent);
+      color:var(--nav);
+      padding:8px 14px;
+      border-radius:20px;
+      font-weight:700;
+      box-shadow: 0 6px 18px rgba(0,191,255,0.08);
+      transition: transform .14s ease, box-shadow .14s ease;
+    }
+    .nav-cta:hover{ transform:translateY(-3px); box-shadow: 0 10px 30px rgba(0,191,255,0.14); }
+
+    /* HERO */
+    .hero {
+      background: var(--hero);
+      padding:90px 8% 72px;
+      text-align:center;
+      border-bottom-left-radius:28px;
+      border-bottom-right-radius:28px;
+      margin-top:8px;
+      box-shadow: inset 0 -40px 60px rgba(0,0,0,0.12);
+    }
+    .hero h1 {
+      font-size:42px;
+      color:#fff;
+      letter-spacing:0.2px;
+      margin-bottom:18px;
+      line-height:1.05;
+    }
+    .hero p {
+      color:var(--muted);
+      max-width:800px;
+      margin: 0 auto 26px;
+      font-size:17px;
+    }
+    .hero .btn{
+      display:inline-block;
+      padding:12px 22px;
+      background:var(--accent);
+      color:var(--nav);
+      border-radius:22px;
+      font-weight:700;
+      text-decoration:none;
+      box-shadow: 0 8px 26px rgba(0,191,255,0.09);
+      transition: transform .14s ease, box-shadow .14s ease;
+    }
+    .hero .btn:hover{ transform:translateY(-4px); box-shadow: 0 18px 50px rgba(0,191,255,0.14); }
+
+    /* EVENTS GRID container */
+    .events-wrap{
+      padding:60px 6%;
+      background: var(--section);
+    }
+
+    .section-heading {
+      text-align:center;
+      margin-bottom:42px;
+    }
+    .section-heading h2 {
+      font-size:30px;
+      color:#fff;
+      margin-bottom:8px;
+    }
+    .section-heading p{
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    /* Cards grid */
+    .cards {
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+      gap:28px;
+      align-items:start;
+      max-width:1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: 0 12px 30px rgba(2,6,23,0.55);
+      transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
+      display:flex;
+      flex-direction:column;
+      min-height:320px;
+    }
+    .card:hover{ transform: translateY(-10px); box-shadow: 0 22px 50px rgba(2,6,23,0.7); }
+
+    .card-media{
+      height:160px;
+      background-size:cover;
+      background-position:center;
+      position:relative;
+    }
+    /* dark overlay on images */
+    .card-media::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(9,22,34,0.25), rgba(0,0,0,0.5));
+    }
+
+    .card-body {
+      padding:20px 20px 26px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+    }
+    .card .date-pill{
+      position:absolute;
+      right:14px;
+      top:12px;
+      background:var(--accent);
+      color:var(--nav);
+      padding:8px 12px;
+      border-radius:10px;
+      font-weight:700;
+      font-size:0.85rem;
+      box-shadow:0 8px 18px rgba(0,191,255,0.08);
+    }
+
+    .card h3{
+      color:var(--accent);
+      font-size:1.15rem;
+      margin-bottom:6px;
+    }
+    .card p { color:var(--muted); font-size:0.95rem; flex:1; }
+
+    .meta {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-top:12px;
+    }
+    .meta .location {
+      color:#9fb4c9;
+      font-size:0.9rem;
+    }
+    .meta .cta {
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      padding:8px 14px;
+      border-radius:14px;
+      color:var(--accent);
+      text-decoration:none;
+      font-weight:700;
+      transition: background .18s, color .18s, transform .12s;
+    }
+    .meta .cta:hover{
+      background:var(--accent);
+      color:var(--nav);
+      transform:translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0,191,255,0.08);
+    }
+
+    /* Feature-like boxes (if you want the same look used in landing) */
+    .feature-row{
+      margin-top:48px;
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap:22px;
+    }
+    .feature{
+      background:var(--card);
+      padding:22px;
+      border-radius:12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      color:var(--muted);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .feature:hover{ transform:translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .feature h4{ color:var(--accent); margin-bottom:8px; font-size:1rem; }
+    .feature p{ font-size:0.92rem; color:#afc8d8; }
+
+    /* Join CTA footer strip */
+    .join-strip {
+      margin-top:40px;
+      background:#0b1724;
+      border-radius:12px;
+      padding:28px;
+      text-align:center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    .join-strip h3{ color:#fff; margin-bottom:8px; font-size:1.15rem; }
+    .join-strip a{ background:var(--accent); color:var(--nav); padding:10px 18px; border-radius:18px; text-decoration:none; font-weight:700; display:inline-block; margin-top:8px; }
+
+    /* responsive tweaks */
+    @media (max-width:900px){
+      .hero{ padding:56px 6% 48px; border-radius:0 0 22px 22px; }
+      .hero h1{ font-size:28px; }
+      nav{ padding:12px 5%; }
+      .cards{ gap:18px; }
+    }
+    @media (max-width:520px){
+      .cards{ grid-template-columns: 1fr; }
+      .hero h1{ font-size:24px; }
+      .hero p{ font-size:14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">AlumniConnect</div>
+
+    <ul>
+      <li><a href="index.html">Features</a></li>
+      <li><a href="events.html" style="color:var(--accent);">Events</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <a class="nav-cta" href="login.html">Login / Sign Up</a>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" role="banner">
+    <h1>Connecting Alumni, Strengthening Institutions</h1>
+    <p>Discover upcoming reunions, workshops, and networking sessions. Be part of the alumni journey and reconnect with your community.</p>
+    <a class="btn" href="#events-grid">Get Started</a>
+  </header>
+
+  <!-- EVENTS GRID -->
+  <main class="events-wrap">
+    <div class="section-heading">
+      <h2 id="events-grid">Upcoming Events</h2>
+      <p>Stay connected — join meetups, tech talks and the annual homecoming. Click register to confirm your seat.</p>
+    </div>
+
+    <section class="cards" aria-live="polite">
+      <!-- Card 1 -->
+      <article class="card" aria-label="Alumni Networking Meetup">
+        <div class="card-media" style="background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop');">
+          <div class="date-pill">Sep 28, 2025</div>
+        </div>
+        <div class="card-body">
+          <h3>Alumni Networking Meetup</h3>
+          <p>Reconnect with fellow alumni across industries. An evening dedicated to building professional relationships and opportunities.</p>
+          <div class="meta">
+            <div class="location">📍 Delhi • 7:00 PM</div>
+            <a class="cta" href="register.html">Register</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card" aria-label="Tech Talk Future of AI">
+        <div class="card-media" style="background-image:url('https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop');">
+          <div class="date-pill">Oct 12, 2025</div>
+        </div>
+        <div class="card-body">
+          <h3>Tech Talk: Future of AI</h3>
+          <p>Industry leaders discuss the next wave of AI innovation and what it means for careers, research, and startups.</p>
+          <div class="meta">
+            <div class="location">📍 Bengaluru • 3:00 PM</div>
+            <a class="cta" href="register.html">Register</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="card" aria-label="Annual Alumni Homecoming">
+        <div class="card-media" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop');">
+          <div class="date-pill">Nov 05, 2025</div>
+        </div>
+        <div class="card-body">
+          <h3>Annual Alumni Homecoming</h3>
+          <p>Celebrate campus memories with cultural events, live music and dinner. Families welcome — a night to remember.</p>
+          <div class="meta">
+            <div class="location">📍 Mumbai • 6:30 PM</div>
+            <a class="cta" href="register.html">Register</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Features row (like screenshot) -->
+    <div style="max-width:1200px;margin:48px auto 0;padding:0 2%;">
+      <div class="section-heading" style="margin-bottom:18px;">
+        <h2>Platform Features</h2>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature">
+          <h4>Centralized Data</h4>
+          <p>Keep all alumni contact and career info in one secure platform.</p>
+        </div>
+        <div class="feature">
+          <h4>Event Management</h4>
+          <p>Create and manage alumni events, track RSVPs, and share updates.</p>
+        </div>
+        <div class="feature">
+          <h4>Networking & Mentorship</h4>
+          <p>Connect alumni with students for mentorship, guidance, and opportunities.</p>
+        </div>
+        <div class="feature">
+          <h4>Donations & Engagement</h4>
+          <p>Enable alumni to contribute to projects and support the institution.</p>
+        </div>
+      </div>
+
+      <div class="join-strip" role="region" aria-label="Join Alumni CTA">
+        <h3>Join the Alumni Network Today!</h3>
+        <a href="login.html">Sign Up Now</a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
