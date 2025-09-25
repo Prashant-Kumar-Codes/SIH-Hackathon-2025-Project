@@ -1,286 +1,257 @@
-{% extends "base.html" %}
-{% block title %}Alumni - Add Details{% endblock %}
+{% extends 'base.html' %}
+{% block title %}AlumniConnect — Dashboard{% endblock %}
 
-{% block styles %}
-{{ super() }}
-
-<style>
-    /* Reset */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Segoe UI", Tahoma, sans-serif;
-    }
-
-    body {
-        display: flex;
-        background: #f4f6fa;
-        color: #333;
-    }
-
-    /* Sidebar */
-    .sidebar {
-        width: 250px;
-        height: 100vh;
-        background: linear-gradient(to bottom, #008cf0, #3e2da1);
-        color: #fff;
-        padding: 1.5rem;
-        position: fixed;
-    }
-
-    .sidebar h2 {
-        margin-bottom: 2rem;
-        font-size: 1.4rem;
-        text-align: center;
-    }
-
-    .sidebar ul {
-        list-style: none;
-    }
-
-    .sidebar ul li {
-        margin: 1.2rem 0;
-    }
-
-    .sidebar ul li a {
-        text-decoration: none;
-        color: #fff;
-        font-size: 1rem;
-        display: block;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        transition: background 0.3s;
-    }
-
-    .sidebar ul li a:hover,
-    .sidebar ul li a.active {
-        background: rgba(255, 255, 255, 0.2);
-    }
-
-    /* Main content */
-    .main-content {
-        margin-left: 250px;
-        padding: 2rem;
-        width: calc(100% - 250px);
-    }
-
-    header {
-        margin-bottom: 2rem;
-    }
-
-    header h1 {
-        font-size: 1.8rem;
-        color: #3e2da1;
-    }
-
-    /* Profile Card */
-    .profile-card {
-        background: #fff;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-        margin-bottom: 2rem;
-    }
-
-    .profile-card img {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        border: 3px solid #3e2da1;
-        object-fit: cover;
-    }
-
-    .profile-info h2 {
-        color: #3e2da1;
-        margin-bottom: 0.5rem;
-    }
-
-    .profile-info p {
-        color: #555;
-        margin-bottom: 0.3rem;
-    }
-
-    /* Edit Form */
-    .edit-form {
-        background: #fff;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .edit-form h3 {
-        margin-bottom: 1rem;
-        color: #3e2da1;
-    }
-
-    .edit-form label {
-        display: block;
-        margin-top: 1rem;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-    }
-
-    .edit-form input,
-    .edit-form select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-    }
-
-    .edit-form button {
-        margin-top: 1.5rem;
-        padding: 12px;
-        border: none;
-        border-radius: 25px;
-        background: linear-gradient(to right, #008cf0, #3e2da1);
-        color: #fff;
-        font-size: 15px;
-        cursor: pointer;
-    }
-
-    .edit-form button:hover {
-        opacity: 0.9;
-    }
-</style>
-{% endblock %}
+  {% block styles %}
+  {{ super() }}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href= "{{url_for('static', filename='css/alumni_student_dashboard.css')}}" rel="stylesheet">
+  {% endblock %}
 
 {% block content %}
-<div class="sidebar">
-    <h2>Alumni Connect</h2>
-    <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="#" class="active">Profile</a></li>
-        <li><a href="#">Events</a></li>
-        <li><a href="#">Mentorship</a></li>
-        <li><a href="#">Donations</a></li>
-        <li><a href="#">Directory</a></li>
-        <li><a href="/logout'">Logout</a></li>
-    </ul>
-</div>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><span class="dot"></span> AlumniConnect</div>
 
-<div class="main-content">
-    <header>
-        <h1>My Profile</h1>
-    </header>
+    <nav id="nav">
+      <a class="nav-btn active" data-target="home"><i class="fas fa-home"></i><span>Home</span></a>
+      <a class="nav-btn" data-target="events"><i class="fas fa-calendar"></i><span>Events</span></a>
+      <a class="nav-btn" data-target="profile"><i class="fas fa-user-circle"></i><span>Profile</span></a>
+      <a class="nav-btn" data-target="projects"><i class="fas fa-briefcase"></i><span>Projects</span></a>      
+      <a class="nav-btn" data-target="directory"><i class="fas fa-address-book"></i><span>Directory</span></a>
+      <a class="nav-btn" id="logout-btn" data-target="logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+    </nav>
 
-    <div class="profile-card">
-        <img src="{{ url_for('static', filename='images/' + student_data.photo) if student_data and student_data.photo else url_for('static', filename='images/cat-pfp.jpg') }}" alt="Profile Picture">
-        <div class="profile-info">
-            <h2>{{ student_data.name if student_data and student_data.name else "Add Your Name" }}</h2>
-            <p>Email: {{ student_data.email if student_data and student_data.email else "Add Your Email" }}</p>
-            <p>Batch: {{ student_data.passing_year if student_data and student_data.passing_year else "Add Your Passing Year" }}</p>
-            <p>Profession: {{ student_data.curr_role if student_data and student_data.curr_role else "Add Your Profession" }}</p>
+    <div class="spacer"></div>
+
+    <div class="quick-actions">
+      <button class="qa-btn" id="create-event">+ Create Event</button>
+      <button class="qa-btn secondary" id="broadcast">Broadcast</button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="top-row">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+        <div class="welcome">Welcome!!</div>
+      </div>
+
+      <div class="search-row">
+        <div class="search"><i class="fas fa-search"></i><input id="globalSearch" placeholder="Search alumni or events..." /></div>
+      </div>
+    </div>
+
+    <section id="home" class="page">
+      <div class="grid">
+        <div class="col-left">
+          <div class="profile-card card">
+            <div class="avatar" id="avatar">
+              <img id="avatar-img" src="{{ url_for('static', filename='images/' + student_data.photo) if student_data and student_data.photo else '' }}" alt="" style="width:100%;height:100%;object-fit:cover;display:none;border-radius:8px" />
+              <div id="avatar-initials">A</div>
+            </div>
+            <div class="profile-meta">
+              <h3 id="profile-name">{{ student_data.name if student_data and student_data.name else "Add Your Name" }}</h3>
+              <div class="muted" id="profile-role">{{ student_data.curr_role if student_data and student_data.curr_role else "Add Your Role" }}</div>
+              <div class="muted">Status: <span id="profile-status">{{ student_data.status if student_data and student_data.status else "Active" }}</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title">Education</div>
+            <div class="muted-2">
+              <p style="margin:0 0 6px 0">{{ student_data.branch if student_data else '' }} from {{ student_data.coll_univ if student_data else 'XYZ Institute' }} ({{ student_data.passing_year if student_data else '2025' }})</p>
+            </div>
+          </div>
+
+          <div class="mid-grid">
+            <div class="card">
+              <div class="section-title">Skills Learnt</div>
+              <div class="skill">
+                <div class="name"><span>Python</span><span>90%</span></div>
+                <div class="progress"><i style="width:90%"></i></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="section-title">Areas of Interest</div>
+              <div class="tags">
+                <div class="tag">AI Research</div>
+              </div>
+              <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:12px 0">
+              <div class="section-title">Traits of Character</div>
+              <div class="tags">
+                <div class="tag">Team Player</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bottom-controls">
+            <button class="small-btn" id="contactBtn"><i class="fas fa-envelope"></i> Contact</button>
+            <button class="small-btn" id="consultBtn"><i class="fas fa-comments"></i> Consultation</button>
+          </div>
         </div>
+
+        <aside class="col-right">
+          <div class="card">
+            <div class="section-title">Achievements</div>
+            <div style="display:flex;gap:12px;align-items:center">
+                <p class="muted-2">2x Hackathon Winner</p>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="section-title">Quick actions</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button class="small-btn" id="quickReg">Register Student</button>
+              <button class="small-btn" id="exportBtn">Export list</button>
+              <button id="exportCsv" style="display:none;"></button> 
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="page" id="profile" style="display:none">
+        <div class="profile-card">
+            <img src="{{ url_for('static', filename='images/' + student_data.photo) if student_data and student_data.photo else url_for('static', filename='images/cat-pfp.jpg') }}" alt="Profile Picture">
+            <div class="profile-info">
+                <h2 id="profile-name-value">{{ student_data.name if student_data and student_data.name else "Add Your Name" }}</h2>
+                <p id="profile-email-p">Email: <span id="profile-email-value">{{ student_data.email_id if student_data and student_data.email_id else "Add Your Email" }}</span></p>
+                <p id="profile-batch-p">Batch: <span id="profile-batch-value">{{ student_data.passing_year if student_data and student_data.passing_year else "Add Your Passing Year" }}</span></p>
+                <p id="profile-role-p">Profession: <span id="profile-role-value">{{ student_data.curr_role if student_data and student_data.curr_role else "Add Your Profession" }}</span></p>
+            </div>
+        </div>
+
+        <div class="edit-form">
+            <h3>Edit Profile</h3>
+            <form id="profileForm" method="POST" action="/add_details" enctype="multipart/form-data">
+                
+                <div><label for="fullName">Full Name *</label><input id="fullName" name="name" type="text" value="{{ student_data.name if student_data else '' }}" minlength="2" required></div>
+                <div><label for="photo">Upload Photo *</label><input id="photo" name="photo" type="file" accept="image/*"><p class="hint">Allowed: JPG, PNG. Max 2MB.</p></div>
+                <div><label for="college">College / Institute *</label><input id="college" name="college" type="text" value="{{ student_data.coll_univ if student_data else '' }}" required></div>
+                <div>
+                    <label for="branch">Branch / Department *</label>
+                    <input list="courses" id="branch" name="branch" type="text" value="{{ student_data.branch if student_data else '' }}" required>
+                    <datalist id="courses"></datalist>
+                </div>
+                <div><label for="passingyear">Passing Year *</label><input id="passingyear" name="passingyear" type="number" value="{{ student_data.passing_year if student_data else '' }}" min="1950" max="2035" required></div>
+                <div><label for="rollno">University Roll No. *</label><input id="rollno" name="rollno" type="text" value="{{ student_data.university_roll_no if student_data else '' }}" required></div>
+                <div><label for="email_id">E-mail Id *</label><input id="email_id" name="email_id" type="email" value="{{ student_data.email_id if student_data else '' }}" required></div>
+                <div><label for="cgpa">CGPA *</label><input id="cgpa" name="cgpa" type="number" value="{{ student_data.cgpa if student_data else '' }}" step="0.01" min="0" max="10" required></div>
+                <div>
+                    <label for="status">Status *</label>
+                    <select id="status" name="status" required>
+                        <option value="">-- Select --</option>
+                        <option value="Passed" {% if student_data and student_data.status == 'Passed' %}selected{% endif %}>Passed</option>
+                        <option value="Not Passed" {% if student_data and student_data.status == 'Not Passed' %}selected{% endif %}>Not Passed</option>
+                        <option value="Pursuing" {% if student_data and student_data.status == 'Pursuing' %}selected{% endif %}>Pursuing</option>
+                    </select>
+                </div>
+                <div><label for="company">Current Company (if any)</label><input id="company" name="company" type="text" value="{{ student_data.current_company if student_data else '' }}" placeholder="e.g. Infosys / Not employed"></div>
+                <div><label for="curr_role">Current Role (if any)</label><input id="curr_role" name="curr_role" type="text" value="{{ student_data.curr_role if student_data else '' }}" placeholder="e.g. HR / Intern"></div>
+
+                <button type="submit">Save</button>
+            </form>
+        </div>
+
+        <div class="card add-list">
+            <h3>Interests</h3>
+            <input type="hidden" name="interests_data" id="interests_hidden_input">
+            <ul id="interestList" class="chip-list">
+                {% if student_data and student_data.interests %}
+                    {% for interest in student_data.interests %}
+                        <li class="chip">{{ interest }}<button type="button">×</button></li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+            <button type="button" id="addInterestBtn" class="add-btn">+ Add Interest</button>
+        </div>
+
+        <div class="card add-list">
+            <h3>Skills</h3>
+            <input type="hidden" name="skills_data" id="skills_hidden_input">
+            <ul id="skillList" class="chip-list">
+                {% if student_data and student_data.skills %}
+                    {% for skill in student_data.skills %}
+                        <li class="chip">{{ skill }}<button type="button">×</button></li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+            <button type="button" id="addSkillBtn" class="add-btn">+ Add Skill</button>
+        </div>
+    </section>
+    
+    <section id="events" class="page" style="display:none">
+      <div class="card">
+        <h2>Events</h2>
+        <p class="muted-2">List of events and RSVPs — placeholder content.</p>
+        <ul id="events-list" style="margin-top:12px;color:var(--muted)">
+          <li><strong>Alumni Meet 2025</strong> — 12 Dec 2025</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="projects" class="page" style="display:none">
+      <div class="card">
+        <h2>Projects</h2>
+        <p class="muted-2">Alumni projects, showcases and portfolios.</p>
+        <div style="margin-top:12px;color:var(--muted)"><strong>Project Alpha</strong> — AI research platform</div>
+      </div>
+    </section>
+
+    <section id="directory" class="page" style="display:none">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h2>Directory</h2>
+          <div class="dir-search">
+            <input placeholder="Search name or batch..." id="dirSearch" />
+            <button class="small-btn" id="dirClear">Clear</button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <table>
+            <thead><tr><th>Name</th><th>Batch</th><th>Email</th></tr></thead>
+            <tbody id="dirList" style="color:var(--muted)">
+              <tr><td>Aprajeeta Sharma</td><td>2018</td><td>aprajeeta@mail.com</td></tr>
+              <tr><td>Nisha Sandilya</td><td>2021</td><td>nisha@mail.com</td></tr>
+              <tr><td>Rohit Sharma</td><td>2020</td><td>rohit@mail.com</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="logout" class="page" style="display:none">
+      <div class="card">
+        <h2>Logout</h2>
+        <p class="muted-2">Are you sure you want to logout?</p>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button class="btn" id="confirmLogout">Yes, logout</button>
+          <button class="small-btn" id="cancelLogout">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="modal-back" id="modalBack">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">Request Consultation</h3>
+      <div class="form-row">
+        <input id="cname" placeholder="Your name" />
+        <input id="cemail" placeholder="Email" />
+        <textarea id="cmsg" placeholder="Message" rows="4"></textarea>
+      </div>
+      <div class="actions">
+        <button class="small-btn" id="cancelModal">Cancel</button>
+        <button class="btn" id="sendConsult">Send Request</button>
+      </div>
     </div>
+  </div>
 
-    <div class="edit-form">
-        <h3>Edit Profile</h3>
-        <form id="profileForm" class="grid" method="POST" action="/add_details">
-            <label for="fullName">Full Name *</label>
-            <input id="fullName" name="name" type="text" value="{{ student_data.name if student_data else '' }}" minlength="2">
+  {% endblock %}
 
-            <label for="photo">Upload Photo *</label>
-            <input id="photo" name="photo" type="file" accept="image/*">
-            <p class="hint">Allowed: JPG, PNG. Max 2MB (client-side check).</p>
-
-            <label for="college">College / Institute *</label>
-            <input id="college" name="college" type="text" value="{{ student_data.coll_univ if student_data else '' }}">
-
-            <label for="branch">Branch / Department *</label>
-            <input list="courses" id="branch" name="branch" type="text" value="{{ student_data.branch if student_data else '' }}">
-            <datalist id="courses">
-                <option value="Bachelor of Technology (B.Tech.) in Computer Science and Engineering">
-                <option value="Bachelor of Technology (B.Tech.) in Mechanical Engineering">
-                <option value="Bachelor of Technology (B.Tech.) in Civil Engineering">
-                <option value="Bachelor of Technology (B.Tech.) in Electrical Engineering">
-                <option value="Bachelor of Technology (B.Tech.) in Electronics and Communication Engineering">
-                <option value="Bachelor of Technology (B.Tech.) in Information Technology">
-                <option value="Bachelor of Technology (B.Tech.) in Chemical Engineering">
-                <option value="Bachelor of Technology (B.Tech.) in Aerospace Engineering">
-                <option value="Bachelor of Technology (B.Tech.) in Biotechnology">
-                <option value="Bachelor of Technology (B.Tech.) in Artificial Intelligence & Machine Learning">
-                <option value="Bachelor of Science (B.Sc.) in Computer Science">
-                <option value="Bachelor of Science (B.Sc.) in Physics">
-                <option value="Bachelor of Science (B.Sc.) in Chemistry">
-                <option value="Bachelor of Science (B.Sc.) in Mathematics">
-                <option value="Bachelor of Science (B.Sc.) in Biotechnology">
-                <option value="Bachelor of Science (B.Sc.) in Microbiology">
-                <option value="Bachelor of Commerce (B.Com)">
-                <option value="Bachelor of Arts (B.A.) in Economics">
-                <option value="Bachelor of Arts (B.A.) in English Literature">
-                <option value="Bachelor of Arts (B.A.) in History">
-                <option value="Bachelor of Arts (B.A.) in Psychology">
-                <option value="Bachelor of Arts (B.A.) in Political Science">
-                <option value="Bachelor of Business Administration (BBA)">
-                <option value="Bachelor of Pharmacy (B.Pharm)">
-                <option value="Bachelor of Architecture (B.Arch)">
-                <option value="Bachelor of Fine Arts (BFA)">
-                <option value="Bachelor of Hotel Management (BHM)">
-                <option value="Bachelor of Journalism and Mass Communication (BJMC)">
-                <option value="Bachelor of Computer Applications (BCA)">
-                <option value="Master of Technology (M.Tech.) in Computer Science">
-                <option value="Master of Technology (M.Tech.) in Structural Engineering">
-                <option value="Master of Business Administration (MBA)">
-                <option value="Master of Computer Applications (MCA)">
-                <option value="Master of Science (M.Sc.) in Data Science">
-                <option value="Master of Science (M.Sc.) in Physics">
-                <option value="Master of Science (M.Sc.) in Chemistry">
-                <option value="Master of Science (M.Sc.) in Mathematics">
-                <option value="Master of Arts (M.A.) in Economics">
-                <option value="Master of Arts (M.A.) in English">
-                <option value="Ph.D. in Computer Science">
-                <option value="Ph.D. in Physics">
-                <option value="Ph.D. in Management">
-                <option value="Diploma in Civil Engineering">
-                <option value="Diploma in Electrical Engineering">
-                <option value="Diploma in Mechanical Engineering">
-                <option value="Diploma in Computer Engineering">
-                <option value="Post Graduate Diploma in Management (PGDM)">
-                <option value="Certificate in Data Analytics">
-                <option value="Certificate in Digital Marketing">
-                <option value="Certificate in Web Development">
-                <option value="Certificate in Graphic Design">
-                <option value="Doctor of Medicine (MD)">
-                <option value="Bachelor of Medicine, Bachelor of Surgery (MBBS)">
-                <option value="Bachelor of Dental Surgery (BDS)">
-                <option value="Juris Doctor (J.D.)">
-                <option value="Bachelor of Laws (LLB)">
-                <option value="Bachelor of Physiotherapy (BPT)">
-            </datalist>
-
-            <label for="passingyear">Passing Year *</label>
-            <input id="passingyear" name="passingyear" type="number" value="{{ student_data.passing_year if student_data else '' }}" min="1950" max="2035">
-
-            <label for="rollno">University Roll No. *</label>
-            <input id="rollno" name="rollno" type="text" value="{{ student_data.university_roll_no if student_data else '' }}">
-
-            <label for="email_id">E-mail Id *</label>
-            <input id="email_id" name="email_id" type="email" value="{{ student_data.email_id if student_data else '' }}">
-    </div>
-
-    <label for="cgpa">CGPA *</label>
-    <input id="cgpa" name="cgpa" type="number" value="{{ student_data.cgpa if student_data else '' }}" step="0.01" min="0" max="10">
-
-    <label for="status">Status *</label>
-    <select id="status" name="status">
-        <option value="">-- Select --</option>
-        <option value="Passed" {% if student_data and student_data.status == 'Passed' %}selected{% endif %}>Passed</option>
-        <option value="Not Passed" {% if student_data and student_data.status == 'Not Passed' %}selected{% endif %}>Not Passed</option>
-        <option value="Pursuing" {% if student_data and student_data.status == 'Pursuing' %}selected{% endif %}>Pursuing</option>
-    </select>
-
-    <label for="company">Current Company (if any)</label>
-    <input id="company" name="company" type="text" value="{{ student_data.current_company if student_data else '' }}" placeholder="e.g. Infosys / Not employed">
-
-    <label for="curr_role">Current Role (if any)</label>
-    <input id="curr_role" name="curr_role" type="text" value="{{ student_data.curr_role if student_data else '' }}" placeholder="e.g. HR / Intern">
-
-    <button type="submit">Submit</button>
-    </form>
-</div>
-{% endblock %}
+  {% block scripts %}
+  <script src="{{ url_for('static', filename='js/alumni_student_dashboard.js') }}"></script>
+  {% endblock %}

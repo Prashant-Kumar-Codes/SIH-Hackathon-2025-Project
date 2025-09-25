@@ -123,34 +123,6 @@
           </div>
         </div>
 
-        <!-- RIGHT column -->
-        <aside class="col-right">
-          
-
-          <div class="card">
-            <div class="section-title">Achievements</div>
-            <div style="display:flex;gap:12px;align-items:center">
-              <div style="width:110px;height:110px;border-radius:999px;background:conic-gradient(#1ea0ff 0 60%, #7b2cff 60% 85%, rgba(255,255,255,0.06) 85%);display:flex;align-items:center;justify-content:center">
-                <div style="background:rgba(2,8,20,0.6);width:62px;height:62px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:800"></div>
-              </div>
-              <div style="flex:1">
-                <div class="muted-2"></div>
-                <div style="margin-top:8px;font-weight:700">hackathons <div style="font-weight:600;color:var(--muted)">• 12 won, 2 tie </div></div>
-                <div style="margin-top:8px;font-weight:700">bootcamps<div style="font-weight:600;color:var(--muted)">• 15 attended</div></div>
-                <div style="margin-top:8px;font-weight:700">research papers <div style="font-weight:600;color:var(--muted)">•7 published</div></div>
-              </div>
-            </div>
-          </div>
-          
-
-          <div class="card">
-            <div class="section-title">Quick actions</div>
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <button class="small-btn" id="quickReg">Register Student</button>
-              <button class="small-btn" id="exportBtn">Export list</button>
-            </div>
-          </div>
-        </aside>
       </div>
     </section>
 
@@ -169,51 +141,205 @@
     </section>
 
 <!--      -------------------------------------------------------------------------------------------------------------            -->
-    <!-- PROFILE PAGE -->
-  <section class="page" id="profile" style="display:none">
-  <div class="profile-card">
-    <img id="profile-img" src="{{ url_for('static', filename='images/' + student_data.photo) if student_data and student_data.photo else url_for('static', filename='images/cat-pfp.jpg') }}" alt="Profile Picture">
-    <div class="profile-info">
-      <h2 id="profile-name">{{ student_data.name if student_data and student_data.name else "Add Your Name" }}</h2>
-      <p>Email: <span id="profile-email">{{ student_data.email if student_data and student_data.email else "Add Your Email" }}</span></p>
-      <p>Batch: <span id="profile-batch">{{ student_data.passing_year if student_data and student_data.passing_year else "Add Your Passing Year" }}</span></p>
-      <p>Profession: <span id="profile-role">{{ student_data.curr_role if student_data and student_data.curr_role else "Add Your Profession" }}</span></p>
+<!-- PROFILE PAGE -->
+    <div class="spa-container">
+
+        <section class="page" id="profile">
+            <div class="profile-card">
+                <img src="{{ url_for('static', filename='images/' + student_data.photo) if student_data and student_data.photo else url_for('static', filename='images/cat-pfp.jpg') }}" alt="Profile Picture">
+                <div class="profile-info">
+                    <h2>{{ student_data.name if student_data and student_data.name else "Add Your Name" }}</h2>
+                    <p>Email: {{ student_data.email if student_data and student_data.email else "Add Your Email" }}</p>
+                    <p>Batch: {{ student_data.passing_year if student_data and student_data.passing_year else "Add Your Passing Year" }}</p>
+                    <p>Profession: {{ student_data.curr_role if student_data and student_data.curr_role else "Add Your Profession" }}</p>
+                </div>
+            </div>
+
+            <div class="edit-form">
+                <h3>Edit Profile</h3>
+                <form id="profileForm" method="POST" action="/add_details" enctype="multipart/form-data">
+                    
+                    <div>
+                        <label for="fullName">Full Name *</label>
+                        <input id="fullName" name="name" type="text" value="{{ student_data.name if student_data else '' }}" minlength="2" required>
+                    </div>
+                    
+                    <div>
+                        <label for="photo">Upload Photo *</label>
+                        <p class="hint" style="font-size:12px">Allowed: JPG, PNG. Max 2MB (client-side check).</p>
+                        <input id="photo" name="photo" type="file" accept="image/*">
+                    </div>
+
+                    <div>
+                        <label for="college">College / Institute *</label>
+                        <input id="college" name="college" type="text" value="{{ student_data.coll_univ if student_data else '' }}" required>
+                    </div>
+
+                    <div>
+                        <label for="branch">Branch / Department *</label>
+                        <input list="courses" id="branch" name="branch" type="text" value="{{ student_data.branch if student_data else '' }}" required>
+                          <datalist id="courses">
+                            <option value="Bachelor of Technology (B.Tech.) in Computer Science and Engineering">
+                            <option value="Bachelor of Technology (B.Tech.) in Mechanical Engineering">
+                            <option value="Bachelor of Technology (B.Tech.) in Civil Engineering">
+                            <option value="Bachelor of Technology (B.Tech.) in Electrical Engineering">
+                            <option value="Bachelor of Technology (B.Tech.) in Electronics and Communication Engineering">
+                            <option value="Bachelor of Technology (B.Tech.) in Information Technology">
+                            <option value="Bachelor of Technology (B.Tech.) in Chemical Engineering">
+                            <option value="Bachelor of Technology (B.Tech.) in Aerospace Engineering">
+                            <option value="Bachelor of Technology (B.Tech.) in Biotechnology">
+                            <option value="Bachelor of Technology (B.Tech.) in Artificial Intelligence & Machine Learning">
+                            <option value="Bachelor of Science (B.Sc.) in Computer Science">
+                            <option value="Bachelor of Science (B.Sc.) in Physics">
+                            <option value="Bachelor of Science (B.Sc.) in Chemistry">
+                            <option value="Bachelor of Science (B.Sc.) in Mathematics">
+                            <option value="Bachelor of Science (B.Sc.) in Biotechnology">
+                            <option value="Bachelor of Science (B.Sc.) in Microbiology">
+                            <option value="Bachelor of Commerce (B.Com)">
+                            <option value="Bachelor of Arts (B.A.) in Economics">
+                            <option value="Bachelor of Arts (B.A.) in English Literature">
+                            <option value="Bachelor of Arts (B.A.) in History">
+                            <option value="Bachelor of Arts (B.A.) in Psychology">
+                            <option value="Bachelor of Arts (B.A.) in Political Science">
+                            <option value="Bachelor of Business Administration (BBA)">
+                            <option value="Bachelor of Architecture (B.Arch)">
+                            <option value="Bachelor of Fine Arts (BFA)">
+                            <option value="Bachelor of Hotel Management (BHM)">
+                            <option value="Bachelor of Journalism and Mass Communication (BJMC)">
+                            <option value="Bachelor of Computer Applications (BCA)">
+                            <option value="Master of Technology (M.Tech.) in Computer Science">
+                            <option value="Master of Technology (M.Tech.) in Structural Engineering">
+                            <option value="Master of Business Administration (MBA)">
+                            <option value="Master of Computer Applications (MCA)">
+                            <option value="Master of Science (M.Sc.) in Data Science">
+                            <option value="Master of Science (M.Sc.) in Physics">
+                            <option value="Master of Science (M.Sc.) in Chemistry">
+                            <option value="Master of Science (M.Sc.) in Mathematics">
+                            <option value="Master of Arts (M.A.) in Economics">
+                            <option value="Master of Arts (M.A.) in English">
+                            <option value="Ph.D. in Computer Science">
+                            <option value="Ph.D. in Physics">
+                            <option value="Ph.D. in Management">
+                            <option value="Diploma in Civil Engineering">
+                            <option value="Diploma in Electrical Engineering">
+                            <option value="Diploma in Mechanical Engineering">
+                            <option value="Diploma in Computer Engineering">
+                            <option value="Post Graduate Diploma in Management (PGDM)">
+                            <option value="Certificate in Data Analytics">
+                            <option value="Certificate in Digital Marketing">
+                            <option value="Certificate in Web Development">
+                            <option value="Certificate in Graphic Design">
+                            <option value="Doctor of Medicine (MD)">
+                            <option value="Bachelor of Medicine, Bachelor of Surgery (MBBS)">
+                            <option value="Bachelor of Dental Surgery (BDS)">
+                            <option value="Juris Doctor (J.D.)">
+                            <option value="Bachelor of Laws (LLB)">
+                            <option value="Bachelor of Physiotherapy (BPT)">
+                          </datalist>
+                    </div>
+
+                    <div>
+                        <label for="passingyear">Passing Year *</label>
+                        <input id="passingyear" name="passingyear" type="number" value="{{ student_data.passing_year if student_data else '' }}" min="1950" max="2035" required>
+                    </div>
+
+                    <div>
+                        <label for="rollno">University Roll No. *</label>
+                        <input id="rollno" name="rollno" type="text" value="{{ student_data.university_roll_no if student_data else '' }}" required>
+                    </div>
+
+                    <div>
+                        <label for="email_id">E-mail Id *</label>
+                        <input id="email_id" name="email_id" type="email" value="{{ student_data.email_id if student_data else '' }}" required>
+                    </div>
+
+                    <div>
+                        <label for="cgpa">CGPA</label>
+                        <input id="cgpa" name="cgpa" type="number" value="{{ student_data.cgpa if student_data else '' }}" step="0.01" min="0" max="10">
+                    </div>
+
+                    <div>
+                        <label for="status">Status *</label>
+                        <input list="status_list" id="status" name="status" required>
+                        <datalist id="status_list">
+                            <option value="">-- Select --</option>
+                            <option value="Passed" {% if student_data and student_data.status == 'Passed' %}selected{% endif %}>Passed</option>
+                            <option value="Not Passed" {% if student_data and student_data.status == 'Not Passed' %}selected{% endif %}>Not Passed</option>
+                            <option value="Pursuing" {% if student_data and student_data.status == 'Pursuing' %}selected{% endif %}>Pursuing</option>
+                        </datalist>
+                    </div>
+
+                    <div>
+                        <label for="company">Current Company (if any)</label>
+                        <input id="company" name="company" type="text" value="{{ student_data.current_company if student_data else '' }}" placeholder="e.g. Infosys / Not employed">
+                    </div>
+
+                    <div>
+                        <label for="curr_role">Current Role (if any)</label>
+                        <input id="curr_role" name="curr_role" type="text" value="{{ student_data.curr_role if student_data else '' }}" placeholder="e.g. HR / Intern / Student">
+                    </div>
+
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+
+            <div class="card add-list">
+                <h3>Education History</h3>
+                <input type="hidden" name="education_data" id="education_hidden_input">
+                <ul id="educationList" class="chip-list">
+                    {% if student_data and student_data.education %}
+                        {% for edu in student_data.education %}
+                            <li class="chip">{{ edu.institute }} | {{ edu.marks }} | {{ edu.year }}<button type="button">×</button></li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+                <button type="button" id="addEducationBtn" class="add-btn">+ Add Education</button>
+            </div>
+            <div class="mid-grid"> 
+                
+                <div class="card add-list">
+                    <h3>Traits of Character</h3>
+                    <input type="hidden" name="traits_data" id="traits_hidden_input">
+                    <ul id="traitsList" class="chip-list">
+                        {% if student_data and student_data.traits %}
+                            {% for trait in student_data.traits %}
+                                <li class="chip">{{ trait }}<button type="button">×</button></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                    <button type="button" id="addTraitBtn" class="add-btn">+ Add Trait</button>
+                </div>
+
+                <div class="card add-list">
+                    <h3>Interests</h3>
+                    <input type="hidden" name="interests_data" id="interests_hidden_input">
+                    <ul id="interestList" class="chip-list">
+                        {% if student_data and student_data.interests %}
+                            {% for interest in student_data.interests %}
+                                <li class="chip">{{ interest }}<button type="button">×</button></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                    <button type="button" id="addInterestBtn" class="add-btn">+ Add Interest</button>
+                </div>
+                
+                <div class="card add-list" style="grid-column: 1 / -1;">
+                    <h3>Skills</h3>
+                    <input type="hidden" name="skills_data" id="skills_hidden_input">
+                    <ul id="skillList" class="chip-list">
+                        {% if student_data and student_data.skills %}
+                            {% for skill in student_data.skills %}
+                                <li class="chip">{{ skill }}<button type="button">×</button></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                    <button type="button" id="addSkillBtn" class="add-btn">+ Add Skill</button>
+                </div>
+
+            </div>
+            </section>
+        
     </div>
-  </div>
-
-  <div class="edit-form">
-    <h3>Edit Profile</h3>
-    <form id="profileForm" method="POST" action="/add_details" enctype="multipart/form-data">
-      <label for="fullName">Full Name *</label>
-      <input id="fullName" name="name" type="text" value="{{ student_data.name if student_data else '' }}" minlength="2">
-
-      <label for="photo">Upload Photo *</label>
-      <input id="photo" name="photo" type="file" accept="image/*">
-
-      <label for="college">College / Institute *</label>
-      <input id="college" name="college" type="text" value="{{ student_data.coll_univ if student_data else '' }}">
-
-      <label for="branch">Branch / Department *</label>
-      <input list="courses" id="branch" name="branch" type="text" value="{{ student_data.branch if student_data else '' }}">
-      <datalist id="courses">
-        <option value="Computer Science">
-        <option value="Mechanical">
-        <option value="Civil">
-      </datalist>
-
-      <label for="passingyear">Passing Year *</label>
-      <input id="passingyear" name="passingyear" type="number" value="{{ student_data.passing_year if student_data else '' }}" min="1950" max="2035">
-
-      <label for="email_id">E-mail Id *</label>
-      <input id="email_id" name="email_id" type="email" value="{{ student_data.email if student_data else '' }}">
-
-      <label for="curr_role">Current Role (if any)</label>
-      <input id="curr_role" name="curr_role" type="text" value="{{ student_data.curr_role if student_data else '' }}">
-
-      <button type="submit">Save</button>
-    </form>
-  </div>
-</section>
 
 
 <!--      -------------------------------------------------------------------------------------------------------------            -->
