@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 auth = Blueprint("auth", __name__)
 
 # MySQL connection (you can also move this to models/__init__.py)
-conn = mysql.connector.connect( host="sql12.freesqldatabase.com", user="sql12800646", password="cK7VmCEWry", database="sql12800646")
+conn = mysql.connector.connect( host="localhost", user="root", password="admin123", database="student_management_system_database")
 
 cursor = conn.cursor(dictionary=True)
 
@@ -25,7 +25,6 @@ def signup():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-        role = request.form['role']
 
         #checking if the user exists in the database or not
         cursor.execute('select email from login_data where email=%s',(email,))
@@ -51,7 +50,7 @@ def signup():
             mail.send(msg)
             now = datetime.utcnow()   # or datetime.now() if you want local time
             # Insert into MySQL
-            cursor.execute("INSERT INTO login_data (username, email, password, role, otp, otp_created_at, is_verified) VALUES (%s,%s, %s, %s, %s, %s, %s)",(username,email, password, role, otp, now, 0))
+            cursor.execute("INSERT INTO login_data (username, email, password, otp, otp_created_at, is_verified) VALUES (%s,%s, %s, %s, %s, %s)",(username,email, password, otp, now, False))
             conn.commit()
 
             session['user_email'] = email
@@ -61,54 +60,12 @@ def signup():
 
 
 
-# LOGIN ROUTE
-@auth.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        role = request.form['role']
-
-        # check if user exists
-        cursor.execute("SELECT * FROM login_data WHERE email=%s AND password=%s AND role=%s", (email, password, role))
-        user = cursor.fetchone()
-        
-        print(user)
-        if user:
-            if user['is_verified'] == 1:
-                session['user_email'] = user['email']  # store login session
-                flash("Login successful!", "success")
-                
-                # Correct redirection logic
-                if user['role'] == 'alumni' or user['role'] == 'student':
-                    return redirect(url_for('auth.alumni_student_dashboard'))
-                elif user['role'] == 'administrator':
-                    return redirect(url_for('auth.administrator_dashboard'))
-                else:
-                    flash('Something wrong. Try Again.', 'warning')
-                    return redirect(url_for('auth.signup'))
-            else:
-                cursor.execute("delete from login_data where email=%s", (user['email'],))
-                flash("Please signin and verify your account.", "warning")
-                return redirect(url_for('auth.signup'))
-        else:
-            flash("Invalid email, role or password.", "danger")
-            # Return the template so the user can try again
-            return render_template('auth/login.html')
-
-    # This handles the initial GET request to display the login form
-    return render_template('auth/login.html')
-
-
-
-
 # constants
 OTP_EXPIRY = 60            # seconds
 RESEND_INTERVAL = 60        # seconds between resends
 STALE_ACCOUNT_SECONDS = 24*3600  # delete unverified accounts older than 24 hours
 
-
-#---------------Deleting the unverified accounts----------------
+# helper: delete stale unverified accounts
 def cleanup_stale_unverified():
     cutoff = datetime.now() - timedelta(seconds=STALE_ACCOUNT_SECONDS)
     try:
@@ -255,6 +212,44 @@ def resend_otp():
     return redirect(url_for('auth.verify'))
 
 
+
+# LOGIN ROUTE
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        role = request.form['role']
+
+        # check if user exists
+        cursor.execute("SELECT * FROM login_data WHERE email=%s AND password=%s AND role=%s", (email, password, role))
+        user = cursor.fetchone()
+        
+        print(user)
+        if user:
+            if user['is_verified'] == 1:
+                session['user_email'] = user['email']  # store login session
+                flash("Login successful!", "success")
+                
+                # Correct redirection logic
+                if user['role'] == 'alumni' or user['role'] == 'student':
+                    return redirect(url_for('auth.alumni_student_dashboard'))
+                elif user['role'] == 'administrator':
+                    return redirect(url_for('auth.administrator_dashboard'))
+                else:
+                    flash('Something wrong. Try Again.', 'warning')
+                    return redirect(url_for('auth.signup'))
+            else:
+                cursor.execute("delete from login_data where email=%s", (user['email'],))
+                flash("Please signin and verify your account.", "warning")
+                return redirect(url_for('auth.signup'))
+        else:
+            flash("Invalid email, role or password.", "danger")
+            # Return the template so the user can try again
+            return render_template('auth/login.html')
+
+    # This handles the initial GET request to display the login form
+    return render_template('auth/login.html')
 
 #logout route
 @auth.route('/logout')

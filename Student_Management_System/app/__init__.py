@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_mail import Mail
-import mysql.connector
 
 mail = Mail()
 
@@ -8,7 +7,7 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = "myappsecretkey"
 
-    # MySQL connection
+# MySQL connection
     app.config['MYSQL_HOST'] = "localhost"
     app.config['MYSQL_USER'] = "root"
     app.config['MYSQL_PASSWORD'] = "admin123"
@@ -23,7 +22,7 @@ def create_app():
     app.config['MAIL_DEFAULT_SENDER'] = 'pkthisisfor1234@gmail.com'
     mail.init_app(app)
 
-    # Import routes
+# Import routes
     from app.routes.auth import auth
     app.register_blueprint(auth)
 
