@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from app import mail
+from flask_mail import Message
 from flask_mail import Message
 import random
 import mysql.connector
