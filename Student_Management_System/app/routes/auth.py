@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_mail import Message
-from flask_mail import Message
+from app import mail
 import random
 import mysql.connector
 from datetime import datetime, timedelta
